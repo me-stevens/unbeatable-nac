@@ -14,7 +14,7 @@ namespace NoughtsAndCrosses {
 
 		Board miniMaxBoard;
 		Player player;
-		Player oponent;
+		Player opponent;
 
 		bool first;
 
@@ -23,17 +23,17 @@ namespace NoughtsAndCrosses {
 		 *********************************************/
 		public AI() {
 			player  = new Player();
-			oponent = new Player();
+			opponent = new Player();
 			first   = false;
 		}
 
 		/**********************************************
 		 * CALCULATE OPTIMAL POSITION
 		 *********************************************/
-		public int[] CalculateCell(Board board, Player player, Player oponent) {
+		public int[] CalculateCell(Board board, Player player, Player opponent) {
 			// Copy the values, not the reference
-			this.player  = player.Copy();
-			this.oponent = oponent.Copy();
+			this.player   = player.Copy();
+			this.opponent = opponent.Copy();
 
 			// Here, "first" is not the first player,
 			// but the player for which MiniMax is optimising
@@ -49,7 +49,7 @@ namespace NoughtsAndCrosses {
 			}
 
 			// Else, call MiniMax
-			int[] pos  = MiniMax(board, this.player, this.oponent);
+			int[] pos  = MiniMax(board, this.player, this.opponent);
 
 			return pos;
 		}
@@ -57,11 +57,11 @@ namespace NoughtsAndCrosses {
 		/**********************************************
 		 * MINIMAX IMPLEMENTATION
 		 *********************************************/
-		public int[] MiniMax(Board board, Player player, Player oponent) {
+		public int[] MiniMax(Board board, Player player, Player opponent) {
 
 			// Output variables: pos and score
-			int[] pos  = new int[2] { -1, -1 };
-			int score  = 0;
+			int[] pos = new int[2] { -1, -1 };
+			int score = 0;
 			
 
 			bool tempFirst = player.IsFirst;
@@ -74,7 +74,7 @@ namespace NoughtsAndCrosses {
 
 				// Placeholders for output variables
 				int[] miniMaxPos = empties[i];
-				int tempScore  = 0;
+				int tempScore    = 0;
 
 				int DIM      = board.GetDIM();
 				miniMaxBoard = new Board(DIM);
@@ -85,11 +85,11 @@ namespace NoughtsAndCrosses {
 
 				// If player didn't close a line, check the next branch
 				if (!winner && miniMaxBoard.GetEmpties().Count > 0) {
-					int[] tempResult = MiniMax(miniMaxBoard, oponent, player);
+					int[] tempResult = MiniMax(miniMaxBoard, opponent, player);
 					tempScore        = tempResult[2];
 				} 
 				
-				// Optimizing for the player. Swap the scores to get an "Unbeatable Loser"
+				// Optimising for the player. Swap the scores to get an "Unbeatable Loser"
 				else if (!winner)
 					tempScore =   0;
 

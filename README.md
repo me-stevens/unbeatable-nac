@@ -10,6 +10,12 @@ An implementation of the good ol' Nought and Crosses, to make an unbeatable boar
 
 For an overview of the code visit the dedicated site: https://me-stevens.github.io/noughts-and-crosses
 
+## To do
+
+- [ ] Extend to bigger boards. Implement depth control.
+- [ ] Add more tests.
+- [ ] Add animations? Or (responsibly) delay the bots to make them look like they are "thinking".
+- [ ] Implement bindings. This is a bit tricky because the binding can only be made to one-dimensional arrays, which would need a restructuration of the `Board` class, and they should also implement the `INotifyPropertyChanged` interface, which would make the application non-GUI agnostic. It's also known to have [other problems](http://justinangel.net/automagicallyimplementinginotifypropertychanged).
 
 ## License
 
