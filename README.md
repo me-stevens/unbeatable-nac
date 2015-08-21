@@ -8,7 +8,7 @@ An implementation of the good ol' Nought and Crosses, to make an unbeatable boar
 
 - The user has the choice of which player goes first.
 
-For an overview of the code visit the dedicated site: https://me-stevens.github.io/noughts-and-crosses
+For an overview of the code visit the dedicated site: http://me-stevens.github.io/unbeatable-nac
 
 ## To do
 
@@ -23,4 +23,4 @@ MIT License
 
 ## Dedicated site
 
-https://me-stevens.github.io/noughts-and-crosses
+http://me-stevens.github.io/unbeatable-nac
