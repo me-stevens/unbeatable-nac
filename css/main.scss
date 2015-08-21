@@ -1,0 +1,36 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+
+/* Our variables */
+$base-font-family: 'Lato', "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+$base-font-size:   18px;
+$small-font-size:  $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit:     2em;
+$max-width:		   45em;
+$thumbs:           15.6em; /* 250px */
+$thumbs-small:     10em;   /* 160px */
+
+$text-color:       #fff;
+$background-color: #45b39c;
+$brand-color:      #4fb7a1;
+$dark:             darken($brand-color, 15%);
+$green:            yellowgreen;
+$yellow:           #fcad26;
+$red:              #E74C3C;
+$second-color:     #68217A;
+
+/* Import partials from `sass_dir` (defaults to `_sass`) */
+@import
+		"fonts",
+        "normalize",
+        "base",
+        "layout",
+		"skin",
+		"prism",
+		"mediaqueries"
+;

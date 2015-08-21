@@ -1,0 +1,110 @@
+---
+layout: post
+subtitle1: "Unbeatable"
+title:     " Noughts And Crosses "
+subtitle2: "using artificial intelligence"
+---
+			<p class="excerpt">An implementation of the good ol' Nought and Crosses game, using the MiniMax algorithm to make it unbeatable.</p>
+
+			<p class="center">
+				<img src="{{ site.baseurl }}/img/win.png" width="698" height="698" alt="Screenshot of a winning board">
+				<a class="btn green" href="https://github.com/me-stevens/unbeatable-nac">Get the code</a>
+			</p>
+
+			<h2>Introduction</h2>
+
+			<p>The rules for this implementation are:</p>
+
+			<ul>
+				<li>The program allows the user to choose the game type (human v. computer, human v. human, or computer v. computer).</li>
+				<li>The computer player can win or draw, but never lose.</li>
+				<li>The user has the choice of which player goes first.</li>
+			</ul>
+			<p>I decided to implement a C&#35; GUI for this project.
+
+
+			<h2>Structure / organization</h2>
+
+			<p>The GUI logic is separated from the GUI-agnostic code, so that the classes can be easily plugged in a console application, for example. It also allows modifications like making the board bigger (work in progress).</p>
+
+			<p>There are two "<em>conventions</em>": <code class="language-csharp">player1</code> always stores the first player, and the first player's mark is an X.</p>
+
+			<p>The code is organized as follows:</p>
+
+			<h3>GUI agnostic</h3>
+
+			<ul>
+				<li><strong>Player.cs:</strong>
+					<p>It saves the name of the player, the statistics, and if it's a robot or a human. The property <code class="language-csharp">IsFirst</code> sets both the mark and who is the first player. The <code class="language-csharp">FirstPos</code> and the number of marks <code class="language-csharp">placed</code> can only be set when the <code class="language-csharp">LastPos</code> is set. The <code class="language-csharp">placed</code> property has a protection for the huge increments suffered during the calculations.</p>
+					<p>A player's properties can be soft or hard reset to account for "play again" or "start a new game" situations.</p></p>
+
+				<li><strong>Board.cs:</strong> 
+					<p>Stores the positions in a two dimensional <code class="language-csharp">string</code> array. When a new cell is set, the player's <code class="language-csharp">LastPos</code> is automatically updated, for consistency.</p></li>
+
+				<li><strong>AI.cs:</strong> 
+					<p>Implements the <a href="https://en.wikipedia.org/wiki/Minimax">MiniMax algorithm</a>. I decided to keep it in its own class (and method), in case other approaches or strategies different to MiniMax want to be tested. You could then put every strategy in their own method and call it from <code class="language-csharp">CalculateCell()</code>.</p>
+
+					<p>The routine gets the empty cells of the board and places one player on the first cell available. If no line is closed (i.e. that player doesn't win), the routine is called again recursively. The empty cells are retrieved again for the new state of the board (one free cell less and one cell occupied by a player). The opponent player is placed on the first available cell, and the process repeats. Scores are given to the different positions depending on who won; if a player, or an opponent.</p>
+
+					<p>It doesn't take the level of depth into account (yet), which would be crucial for bigger N&amp;C boards, as is the case with other games like Othello/Reversi, for example.</p>
+					</li>
+				</ul>
+
+			<h3>GUI related</h3>
+
+			<ul>
+				<li><strong>MainWindow.xaml.cs:</strong>
+					<p class="center">
+						<img src="{{ site.baseurl }}/img/draw.png" width="698" height="698" alt="Screenshot of the main window showing a draw.">
+					</p>
+					<p>Connects the GUI-agnostic part of the application and the GUI-related part. It uses a <code class="language-csharp">UniformGrid</code> and lightweight <code class="language-csharp">TextBlock</code>s for the grid. The menu uses two modal dialogs, <strong>FormNew.xaml.cs</strong>, to fetch the relevant data and start a new game, and  <strong>MenuPopUps.xaml.cs</strong>, to provide extra information.</p>
+
+					<p>To  set a position in the board, two variables are needed: an <code class="language-csharp">index</code> for the GUI grid, and a pair <code class="language-csharp">pos {i, j}</code>for the board, where <code class="language-csharp">i</code> is the row index and <code class="language-csharp">j</code> is the column index.</p>
+
+					<p>The human and robot logic flows are very similar:</p>
+
+					<ul>
+						<li>Calculate the position. If a human, the position is the index of the clicked control. If a robot, the position is a pair calculated by the artificial-intelligence  algorithm.</li>
+						<li>Update the GUI grid and the board with the position.</li>
+						<li>Check for winner or full board.</li>
+						<li>If no winner or full, check the <em>humanity</em> of the next player to decide if we launch the AI routine or listen for new clicks.</li>
+					</ul>
+
+					<p>The first point is covered by <code class="language-csharp">RobotTurn()</code> and <code class="language-csharp">HumanTurn()</code>. The rest of the points are covered by <code class="language-csharp">UpdateGameStatus()</code>.</p>
+				</li>
+
+				<li><strong>FormNew.xaml.cs:</strong>
+						<p class="center"><img src="{{ site.baseurl }}/img/formNew.png" width="558" height="368" alt="Screenshot of the form that fetches the variables to start a new game."></p>
+
+					<p>It allows the user to chose human or robot players and set who goes first. It also provides inputs for the human's names. In case names are not provided, defaults are used. The GUI is updated with every click on a radio button.</p>
+				</li>
+
+				<li><strong>MenuPopUps.xaml.cs:</strong>
+					<p>The pop-up modal windows for the other items of the menu.</p>
+				</li>
+
+				<li><strong>Styles.xaml:</strong>
+					<p>Where the styles of the application are set.</p>
+				</li>
+			</ul>
+
+
+
+
+			<h2>Unit Tests</h2>
+
+			<p>There are one file per class and one or more methods per class method.</p>
+
+			<h2>To do</h2>
+
+			<ul>
+				<li>Extend to bigger boards. Implement depth control.</li>
+				<li>Add more tests.</li>
+				<li>Add animations? Or delay the bots to make them look like they are "thinking".</li>
+				<li>Implement bindings. This is a bit tricky because the binding can only be made to one-dimensional arrays, which would need a restructuration of the <code class="language-csharp">Board</code> class, and they should also implement the <code class="language-csharp">INotifyPropertyChanged</code> interface, which would make the application non-GUI agnostic. It's also known to have <a href="http://justinangel.net/automagicallyimplementinginotifypropertychanged">other problems</a>.
+			</ul>
+
+			<p class="center">
+				<a class="btn green" href="https://github.com/me-stevens/unbeatable-nac">Get the code</a>
+			</p>
+

@@ -1,0 +1,249 @@
+.wrapper {
+	padding: 0 1em;
+	max-width: $max-width;
+	margin: auto;
+}
+
+.main a {
+	border-bottom: .2em solid #fff;
+
+	&:hover {
+		border-color: lighten($brand-color, 20%);
+	}
+
+	&:visited {
+		border-color: $dark;
+	}
+}
+
+.center {
+	text-align: center;
+}
+
+.small {
+	font-size: .8em;
+}
+
+/*********************************
+ *  TOP NAVIGATION
+ *********************************/
+.top {
+	width: 100%;
+	font-size: 0.7em;
+	line-height: 3;
+	background: $dark
+}
+
+.top a {
+	display: inline-block;
+	width: 33%;
+	padding: 0 1em;
+	letter-spacing: 0.1em;
+	color: $text-color;
+}
+
+.top a:hover {
+	background: darken($brand-color, 25%);
+	text-decoration: none;
+	color: $text-color;
+
+	path {
+		fill: $text-color;
+	}
+}
+
+.top a:visited {
+	color: $brand-color;
+
+	path {
+		fill: $brand-color;
+	}
+}
+
+.icon span {
+	display: none;
+}
+
+.top .home {
+	text-align: center;
+}
+
+.top .right {
+	float: right;
+	text-align: right;
+}
+
+.top .disabled {
+	svg,
+	span {
+		display: none;
+	}
+}
+/*********************************
+ *  SNIPPET NAVIGATION
+ *  AND TOOLTIP
+ *********************************/
+$angle: 45deg;
+
+/* TOOLTIP */
+.antirotate {
+	display: block;
+	transform: rotate(-$angle);
+}
+
+.tooltip {
+	display: none;
+	position: absolute;
+	top: 0; left: 0;	
+	width: $thumbs-small;
+/*	margin: 4em 0 0 -5.7em;*/
+	margin: 4em 0 0 -5.2em;
+	padding: .5em;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 300;
+	color: #fff;
+	background: $dark;
+	border-radius: 1.5em;
+	cursor: default;
+	pointer-events: none;
+
+	/* Filler gap to keep content so that cursor can pass over */
+	&::before {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 2.1em;
+		bottom: 100%;
+		left: 0;
+		pointer-events: none;
+	}
+	
+	/* Arrow */
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 99%; left: 90%;
+		height: 0;
+		width: 0;
+		margin-left: -$thumbs-small/2;
+		border: .6em solid transparent;
+		border-bottom-color: $dark;
+		pointer-events: none;
+	}
+
+	& img {
+		height: $thumbs-small;
+		display: block;
+		border-radius: 1em;
+	}
+}
+
+/*  SNIPPET NAVIGATION */
+.snippets {
+	font-size: 0.9em;
+	text-align: center;
+	margin-bottom: 3em;
+
+	& ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	& li,
+	& a {
+		display: inline-block;
+	}
+
+	& li {
+		position: relative; /* For the tooltip */
+		margin: 0.5em;
+		padding: 0;
+		background-color: lighten($brand-color, 10%);
+		border-radius: 50% 50% 0;
+		cursor: pointer;
+		transform:rotate($angle); 
+		backface-visibility: hidden;
+		transition: .2s ease-in-out;
+		transition-property: background-color, top;
+		z-index: 1;
+
+
+		&:hover {
+			background-color: #fff;
+
+			& a {
+				color: $brand-color;
+			}
+
+			& .tooltip {
+				pointer-events: auto;
+			}
+		}
+	}
+	
+	& a {
+		float: left; /* Allows vertical margin to work */
+		padding: 0.6em 1em;
+		border-radius: 50%;
+		transform: rotate(-$angle);
+	}
+
+	& .selected,
+	& .selected:hover {
+		background-color: #fff;
+		color: $brand-color;
+
+		& a {
+			color: $brand-color;
+			
+		}
+	}
+}
+
+/*********************************
+ *  HIDE AND SHOW
+ *********************************/
+.solution {
+	& .contents, 
+	& input {
+		display:none;
+	}
+
+	& [type=checkbox]:checked ~ .contents{
+		display:block;
+	}
+
+	& [type=checkbox]:checked + label svg{
+		transition: all .4s;
+		transform: rotate(180deg);
+	}
+}
+
+/* **********************
+ *  FOOTER
+ ***********************/
+footer {
+	border-top: .5em solid $dark;
+	background-color: $brand-color;
+    padding: 1em 0 2em;
+	font-size: $small-font-size
+}
+
+
+.footer-col {
+    float: left;
+	width: 100%; /* Important for the second column on small screens */
+
+	& ul {
+		padding-left: 0;
+		margin-left: 0;
+    	list-style: none;
+	}
+
+	&:first-of-type li:before {
+	    content: '\22C6';
+	    margin: 0 .3em;
+	}
+}

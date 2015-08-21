@@ -1,0 +1,429 @@
+.excerpt {
+	font-size: 1.3em;
+	text-align: center;
+	font-weight: 300;
+}
+
+.asciiart {
+	font-family: Consolas, Monaco, 'Andale Mono', monospace;
+	font-size: .7em;
+	letter-spacing: .2em;
+}
+/****************************
+ *   CODROPS MODIFIED
+ *    SQUARED LAYOUT
+ ****************************/
+.grid {
+	position: relative;
+	min-height: 100%;
+    max-width: $thumbs;
+	margin: $spacing-unit auto;
+
+	& a {
+		float: left;
+	    color: $dark;
+        
+		&:hover {
+
+			img {
+				opacity: 1;
+			}
+
+			path {
+				fill: $text-color;
+			}
+
+			h3, 
+			p {
+				transform: translateY(.5em);
+    			opacity: 0;
+				transition-delay: 0s;
+			    transition-duration: 0.1s;
+			}
+
+			span {
+			    transition-timing-function: ease-out;
+			    transform: translateY(0);
+			}
+		}
+
+		&:visited path {
+			fill: #fff;
+		}
+	}
+
+	/* BELOW: Figure */
+	& figure {
+	    position: relative;
+	    max-width: $thumbs;
+	    overflow: hidden;
+	    margin: .3em;
+	    background: $dark;
+	}
+
+	/* BELOW: Image */
+	& img {
+	    position: relative;
+	    display: block;
+	    width: 100%;
+		height: 100%;
+	    opacity: 0.2;
+	    transition: opacity 0.3s;
+	}
+
+	/* OVER: SVG layer */
+	& svg {
+	    position: absolute;
+	    top: -1px; /* fixes rendering issue in FF */
+	    width: 100%;
+	    height: 100%;
+	    z-index: 10;
+	}
+
+	/* OVER: Fig Caption */
+	& figcaption {
+	    position: absolute;
+	    top: 0;
+	    height: 100%;
+	    width:  100%;
+	    padding: 5%;
+	    text-align: center;
+	    z-index: 11;
+
+		& h3 {
+	    	margin: 0 0 3%;
+		    color: $dark;
+		    text-transform: uppercase;
+		    letter-spacing: 1px;
+    		font-weight: 300;
+	    	font-size: 130%;
+		    transition: transform 0.3s;
+		}
+
+		& p {
+		    padding: 0 1em;
+    		font-weight: 400;
+			font-size: $small-font-size;
+		    color: $brand-color;
+		    transition: opacity 0.3s, transform 0.3s;
+		    transition-delay: 0.05s;
+		}
+
+		& h3, 
+		& p {
+		    timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
+		}
+
+		& span {
+		    position: absolute;
+		    bottom: 0; left: 0;
+		    width: 100%;
+		    padding: .3em 1em;
+		    background: #fff;
+		    font-weight: 300;
+		    text-transform: uppercase;
+		    letter-spacing: 1px;
+		    color: $brand-color;
+		    transition: opacity 0.3s, transform 0.3s;
+		    transform: translateY(100%);
+		}
+
+		&, 
+		& h3,
+		& p, 
+		& span {
+		    backface-visibility: hidden;
+		}
+	}
+}
+
+/****************************
+ * BUTTONS
+ ****************************/
+button,
+input[type=text],
+input[type=submit],
+.btn {
+    display: inline-block;
+    position: relative;
+    margin: 1em;
+    padding: 1.5em 3em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    border-radius: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+
+	&:hover {
+    	background-color: #f29e0d;
+		text-decoration: none;
+	}
+	
+	& svg {
+		width: 2em;
+		height: 2em;
+		vertical-align: middle;
+		padding: 0 1em;
+	}
+}
+
+input[type=text] {
+	width: 12em;
+	background: $brand-color;
+	border: 2px solid lighten($brand-color, 5%);
+	cursor: text;
+
+	&:hover {
+    	background-color: lighten($brand-color, 5%);
+		border-color: $dark;
+	}
+}
+
+button,
+input[type=submit],
+.green {
+	background-color: $green;
+}
+.yellow {
+    background-color: $yellow;
+}
+.red {
+    background-color: $red;
+}
+
+.separator {
+	padding-left: 8em;
+}
+
+.main a.btn {
+	border: 0;
+
+    &:hover {
+		color: currentColor;
+
+		& path {
+			fill: currentColor;
+		}
+    }
+}
+
+/* Background */
+.separator:before {
+	content: '\22C6';
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: 4em;
+    line-height: 4.5;
+	color: $red;
+    background-color: #fff;
+    border-radius: .71em 0 0 .71em;
+    transition: all 0.3s ease 0s;
+    z-index: 2;
+}
+
+/* Arrow */
+.separator:after {
+    content: '';
+    position: absolute;
+    left: 4em; top: 50%;
+    width: 0;
+    height: 0;
+    margin: -.8em 0 0;
+	border: 1em solid transparent;
+	border-left-color: white;
+	transform-style: preserve-3d; 
+    transition: all 0.3s ease 0s;
+    z-index: 1;
+}
+
+
+/****************************
+ * SOCIAL ICONS
+ ****************************/
+.social-wrap {
+	text-align: center;
+	margin: 0 auto;
+
+	& li {
+		display: inline-block;
+		width: 49%;
+	}
+}
+
+.social {
+	position: relative;
+	display: block;
+	width:  1.7em;
+	height: 1.7em;
+	margin: 1.5em auto;
+	padding: .2em;
+	color: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: 1;
+	background: rgba(255,255,255,0.1);
+	transition: background 0.2s, color 0.2s;
+
+	& svg {
+		width: 1em;
+		height: 1em;
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		top: -.5em; left: -.5em;
+		width:  100%;
+		height: 100%;
+		padding: .5em;
+		border-radius: 50%;
+		opacity: 0;
+		box-shadow: 0 0 0 .2em #fff;
+		pointer-events: none;
+		transition: transform 0.2s, opacity 0.2s;
+		transform: scale(.8);
+	}
+
+	&:hover {
+		background: #fff;
+		color: $dark;
+		
+		& path {
+			fill: $dark;
+		}
+	}
+
+	&:hover:after {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+
+/*************************
+ *  PRISM JS OVERRIDES
+ *************************/
+.wrapper {
+	
+	pre[class*="language-"] {
+		-webkit-box-shadow: 0 0 0 0 transparent;
+		-moz-box-shadow: 0 0 0 0 transparent;
+		box-shadow: 0 0 0 0 transparent;
+		border-left: .6em solid $green;
+		background-color: lighten($green, 40%);
+		background-image: -webkit-linear-gradient(lighten($green, 40%) 50%, rgba(154, 205, 50, 0.1) 50%	);
+		background-image: -moz-linear-gradient(lighten($green, 40%) 50%, rgba(154, 205, 50, 0.1) 50%);
+		background-image: -ms-linear-gradient(lighten($green, 40%) 50%, rgba(154, 205, 50, 0.1) 50%);
+		background-image: -o-linear-gradient(lighten($green, 40%) 50%, rgba(154, 205, 50, 0.1) 50%);
+		background-image: linear-gradient(lighten($green, 40%) 50%, rgba(154, 205, 50, 0.1) 50%);
+		background-size: 3em 3em;
+		font-size: .6em;
+	}
+
+	pre[class*="language-"]:before,
+	pre[class*="language-"]:after {
+		-webkit-box-shadow: 0 0 0 0 transparent;
+		-moz-box-shadow: 0 0 0 0 transparent;
+		box-shadow: 0 0 0 0 transparent;
+	}
+
+
+
+/*	.token.atrule,*/
+/*	.token.attr-value,*/
+/*	.token.keyword,*/
+/*	.token.class-name {*/
+/*		color: #68217a;*/
+/*	}*/
+}
+
+section :not(pre) > code[class*="language-"] {
+	font-size: .6em;
+	margin-bottom: 0;
+}
+
+/*************************
+ *  TABLES
+ *************************/
+.table {
+	width: 95%;
+	margin: auto auto 1em;
+	border-spacing: 1em 0;
+
+	caption {
+		font-weight: 300;
+		font-size: 1.3em;
+		margin: 1em auto;
+	}
+
+	th {
+		background-color: lighten($brand-color, 10%);
+		border: 1px solid lighten($brand-color,  5%);
+	}
+
+	tr:nth-of-type(2n) td {
+		background-color: lighten($brand-color, 45%);
+	}
+
+	td {
+		background-color: #fff;
+		padding: .5em;
+	}
+
+	th, 
+	td {
+		min-height: 2em;
+	}
+
+	code[class*="language-"] {
+		border: 0;
+		background: transparent;
+	}
+
+	.nostyle {
+		background-color: transparent;
+		border: 0;
+	}
+}
+
+.uncollapse {
+	table-layout: fixed;
+
+	td {
+		width: 4em;
+		color: $dark;
+		border-right: 1px solid lighten($brand-color, 35%);
+	}
+}
+
+.special span {
+	display: block;
+	height: 2em;
+	width:  2em;
+	margin: 1em auto;
+	padding: 1em;
+	line-height: 2;
+	border: .2em solid #fff;
+	border-radius: 50%;
+}
+
+/*************************
+ *  PARAGRAPH IMAGES & LI
+ *************************/
+.pimg-r {
+	float: right;
+	margin: 0 0 1em 1em;
+}
+.pimg-l {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+.pli {
+	li {
+		list-style-type: none;
+	}
+}

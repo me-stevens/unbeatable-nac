@@ -1,0 +1,33 @@
+---
+layout: default
+---
+		<section class="wrapper">
+			<h1>Not found :(</h1>
+			<p>Sorry, but the page you were trying to view does not exist.</p>
+			<p>It looks like this was the result of either:</p>
+
+			<ul>
+				<li>a mistyped address</li>
+				<li>an out-of-date link</li>
+			</ul>
+
+			<script>
+				var GOOG_FIXURL_LANG = (navigator.language || '').slice(0,2),GOOG_FIXURL_SITE = location.host;
+			</script>
+			<script src="//linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js"></script>
+		</section>
+
+		<section class="wrapper">
+			<h2>Site pages:</h2>
+
+			<div class="columns-3">{% for pair in site.pairing %}
+
+				<div class="unbreakable">
+					<h3>{{ pair[1] }}</h3>
+					<ul>{% for post in site.posts reversed %}{% if post.category == pair[0] %}
+						<li><a href="{{ post.url | prepend: site.baseurl }}" >{{ post.shortitle }}</a></li>{% endif %}{% endfor %}
+					</ul>
+				</div>{% endfor %}
+
+			</div>
+		</section>

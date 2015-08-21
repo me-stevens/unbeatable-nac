@@ -1,0 +1,51 @@
+		<footer>
+
+			<div class="wrapper clearfix">
+
+				<div class="footer-col">
+					<ul>
+						<li>Site by <a href="http://octopusinvitro.tk">Octopus in Vitro</a>.</li>
+						<li><a href="prismjs.com/">Prism</a> syntax highlighter by Lea Verou.</li>
+					</ul>
+				</div>
+
+				<div class="footer-col">
+					<ul class="social-wrap">
+
+{% if site.git_user %}
+						<li>
+							<a href="https://github.com/{{ site.git_user }}/{{ site.git_repo }}" class="social">
+								<span class="icon">
+{% include github.svg %}								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://bitbucket.org/{{ site.git_user }}/{{ site.git_repo }}" class="social">
+								<span class="icon">
+{% include bitbucket.svg %}							</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://gitlab.com/{{ site.git_user }}/{{ site.git_repo }}" class="social">
+								<span class="icon">
+{% include gitlab.svg %}								</span>
+							</a>
+						</li>{% endif %}
+{% if site.twitter_user %}
+						<li>
+							<a href="https://twitter.com/{{ site.twitter_user }}" class="social">
+								<span class="icon">
+{% include twitter.svg %}								</span>
+							</a>
+						</li>{% endif %}
+
+					</ul>
+				</div>
+
+				<div class="footer-col">
+
+					<p class="text">{{ site.description }}</p>
+
+				</div>
+			</div>
+		</footer>

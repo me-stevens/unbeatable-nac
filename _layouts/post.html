@@ -1,0 +1,15 @@
+---
+layout:   default
+---
+
+		<article>			
+
+			<header class="wrapper">
+				<h1><span class="subtitle">{% if page.subtitle1 %}{{ page.subtitle1 }}{% endif %}</span>{% if page.title %}{{ page.title }}{% endif %}<span>{% if page.subtitle2 %}{{ page.subtitle2 }}{% endif %}</span></h1>
+			</header>
+	
+			<section class="main"><div class="wrapper">
+{{ content }}
+			</div></section>
+
+		</article>
