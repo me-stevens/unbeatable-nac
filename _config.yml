@@ -1,7 +1,7 @@
 # Site settings
 title:       Unbeatable Noughts And Crosses
 description: > # this means to ignore newlines until "baseurl:"
-  This is game implements an unbeatable player that uses artificial intelligence to always win or draw.
+  This game implements an unbeatable player that uses artificial intelligence to always win or draw.
 baseurl:     /unbeatable-nac # the subpath of your site, e.g. /blog/
 url:         https://me-stevens.github.io # the base hostname & protocol for your site
 permalink:   /:title
