@@ -57,17 +57,14 @@ namespace NoughtsAndCrosses {
 			return "";
 		}
 
-		// Set board by reference
 		public void SetBoard(string[,] newBoard) {
 			board = newBoard;
 		}
 
-		// Get board by reference
 		public string[,] GetBoard() {
 			return board;
 		}
 
-		// Get board by copying contents
 		public string[,] Copy() {
 			string[,] copy = new string[DIM, DIM];
 			copy = (string[,]) board.Clone();

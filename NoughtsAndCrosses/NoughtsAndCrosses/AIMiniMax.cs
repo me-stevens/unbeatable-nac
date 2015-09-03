@@ -6,7 +6,6 @@ namespace NoughtsAndCrosses {
 	public class AIMiniMax : AI {
 
 		public int[] CalculateCell(Board board, bool player) {
-			DIM   = board.GetDIM();
 			first = player;
 
 			int[] result = Algorithm(board, first);

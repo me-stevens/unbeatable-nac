@@ -6,8 +6,6 @@ namespace NoughtsAndCrosses {
 	public class AINegaMaxAlphaBeta : AI {
 
 		public int[] CalculateCell(Board board, bool player) {
-			DIM   = board.GetDIM();
-
 			int alpha = -10;
 			int beta  =  10;
 			int depth =   8;
