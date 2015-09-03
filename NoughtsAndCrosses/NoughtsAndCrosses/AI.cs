@@ -4,10 +4,10 @@ namespace NoughtsAndCrosses {
 	public class AI {
 
 		protected Board tempBoard;
-		protected int DIM;
 		protected bool first;
 
 		public bool PlaceMarkAndCheckWinner(Board board, int[] tempPos, bool tempFirst) {
+			int DIM = board.GetDIM();
 			tempBoard = new Board(DIM);
 			tempBoard.SetBoard(board.Copy());
 			tempBoard.SetCell(tempPos, tempFirst);

@@ -1,4 +1,4 @@
-64-bits Intel Core i7  @2.40GHz 8Gb RAM Windows7
+64-bit Intel Core i7 @2.40GHz and 8Gb RAM Windows7
 Visual Studio 2012 / .NET 4.5
 
 NegaMax

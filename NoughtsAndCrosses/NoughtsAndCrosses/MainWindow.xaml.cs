@@ -130,8 +130,6 @@ namespace NoughtsAndCrosses {
 			int[] pos;
 			int index;
 
-			//AIMiniMax ai = new AIMiniMax();
-			//AINegaMax ai = new AINegaMax();
 			AIMiniMaxAlphaBeta ai = new AIMiniMaxAlphaBeta();
 			//AINegaMaxAlphaBeta ai = new AINegaMaxAlphaBeta();
 

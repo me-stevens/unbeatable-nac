@@ -5,8 +5,6 @@ namespace NoughtsAndCrosses {
 	public class AINegaMax : AI {
 
 		public int[] CalculateCell(Board board, bool player) {
-			DIM = board.GetDIM();
-
 			int[] result = Algorithm(board, player);
 			return new[] {result[0], result[1]};
 		}
