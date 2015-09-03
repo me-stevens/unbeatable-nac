@@ -34,20 +34,6 @@ namespace NoughtsAndCrosses {
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
 			statusBar.Text = "Noughts & Crosses";
 
-			boardGrid.Rows    = DIM;
-			boardGrid.Columns = DIM;
-
-			for (int i=0; i<boardGrid.Rows; i++) {
-				for (int j=0; j<boardGrid.Columns; j++) {
-
-					TextBlock tb = new TextBlock();
-					tb.Width     = border.Width / 3;
-					tb.Height    = border.Height / 3;
-					tb.Style     = (Style)Resources["cells"] as Style;
-					boardGrid.Children.Add(tb);
-				}
-			}
-
 			// Hide footer until the game is started
 			playAgain.Visibility    = Visibility.Hidden;
 			footerlabel1.Visibility = Visibility.Hidden;
@@ -66,6 +52,7 @@ namespace NoughtsAndCrosses {
 				player2 = new Player(fn.Name2, fn.IsHuman2, false);
 
 				DIM = fn.DIM;
+				InitialiseBoards();
 				gameStats = new GameStats();
 
 				// Update GUI
@@ -82,7 +69,31 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
+		private void InitialiseBoards() {
+			int windowSize = 700;
+			int cellSize   = 140;
 
+			this.Width  = windowSize + (DIM - 3) * cellSize;
+			this.Height = windowSize + (DIM - 3) * cellSize;
+
+			boardGrid.Children.Clear();
+
+			boardGrid.Rows    = DIM;
+			boardGrid.Columns = DIM;
+			boardGrid.Height  = DIM*cellSize;
+			boardGrid.Width   = DIM*cellSize;
+
+			for (int i=0; i<DIM*DIM; i++) {
+				TextBlock tb = new TextBlock();
+				tb.Width     = cellSize;
+				tb.Height    = cellSize;
+				tb.Style     = (Style) Resources["Cells"] as Style;
+
+				boardGrid.Children.Add(tb);
+			}
+
+			board = new Board(DIM);
+		}
 
 		private void Start() {
 			// Reset everything

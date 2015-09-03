@@ -1,7 +1,7 @@
 ﻿<Window x:Name="newGame" x:Class="NoughtsAndCrosses.FormNew"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="New Game" Height="370" Width="560" Loaded="FormNew_Loaded" ResizeMode="NoResize">
+        Title="New Game" Height="500" Width="560" Loaded="FormNew_Loaded" ResizeMode="NoResize">
 
 	<Window.Resources>
 		<ResourceDictionary Source="Styles.xaml" />
@@ -34,6 +34,14 @@
 			</StackPanel>
 		</Border>
 
+		<!-- BOTTOM BORDER: Choose board size -->
+		<Border x:Name="borderB" Style="{StaticResource BorderB}">
+			<StackPanel>
+				<TextBlock Style="{StaticResource TitleL}" Text="Choose board size"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<RadioButton x:Name="size1" Style="{StaticResource RadioButtons}" Content="3x3" GroupName="boardSize"/>
+					<RadioButton x:Name="size2" Style="{StaticResource RadioButtons}" Content="4x4" GroupName="boardSize"/>
+				</StackPanel>
 			</StackPanel>
 		</Border>
 

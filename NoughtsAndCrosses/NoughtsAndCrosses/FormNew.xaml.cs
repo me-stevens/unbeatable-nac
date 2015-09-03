@@ -13,6 +13,7 @@ namespace NoughtsAndCrosses {
 		public bool IsHuman2 { set; get; }
 		public string Name1  { set; get; }
 		public string Name2  { set; get; }
+		public int DIM       { set; get; }
 
 		// GUI placeholders
 		private string you;
@@ -34,6 +35,7 @@ namespace NoughtsAndCrosses {
 
 			players1.IsChecked = true;
 			first1.IsChecked   = true;
+			size1.IsChecked    = true;
 
 			first1.Content = you;
 			first2.Content = robot1;
@@ -131,6 +133,8 @@ namespace NoughtsAndCrosses {
 				Name1 = Name2;
 				Name2 = auxn;
 			}
+
+			DIM = ((bool) size1.IsChecked) ? 3 : 4;
 		}
 
 	
