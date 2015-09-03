@@ -9,67 +9,61 @@ namespace Tests {
 	[TestClass]
 	public class TestBoard {
 
-		static int DIM  = 3;
-		Board  b = new Board(DIM);
-		Player p = new Player();
-		Random r = new Random();
+		static int DIM  = 4;
+		Board  board    = new Board(DIM);
+		Random random   = new Random();
+		GameStats gameStats = new GameStats();
 
-		/*****************************************************
-		 * SETCELL - The correct mark is stored?
-		 *****************************************************/ 
+		[TestMethod]
+		public void TestReset() {
+			string expectedCell = "";
+			
+			board.Reset();
+
+			foreach (string cell in board.GetBoard())
+				Assert.AreEqual(expectedCell, cell, "\n--- Expected: empty. Actual: cell = " + cell);
+		}
+	
 		[TestMethod]
 		public void TestSetCellMark() {
-			int i = r.Next(DIM);
-			int j = r.Next(DIM);
+			board.Reset();
+			int i = random.Next(DIM);
+			int j = random.Next(DIM);
 
-			// Test X - Arrange --------------------------
-			p.IsFirst = true;
+			// Test X
+			bool first = true;
 			string expected = "X";
 
-			// Act
-			b.SetCell(i, j, p);
+			board.SetCell(i, j, first);
 
-			// Assert
-			Assert.AreEqual(expected, b.GetCell(i, j), " \n--- Expected: " + expected + ". Actual b.GetCell(i, j): " + b.GetCell(i, j));
-			Debug.WriteLine(b.ToString());
+			Assert.AreEqual(expected, board.GetCell(i, j), " \n--- Expected: " + expected + ". Actual: board.GetCell(i, j): " + board.GetCell(i, j));
 
-			// Test O - Arrange --------------------------
-			p.IsFirst = false;
+			// Test O
+			first = false;
 			expected  = "O";
 
-			// Act
-			b.SetCell(i, j, p);
+			board.SetCell(i, j, first);
 
-			// Assert
-			Assert.AreEqual(expected, b.GetCell(i, j), " \n--- Expected: " + expected + ". Actual b.GetCell(i, j): " + b.GetCell(i, j));
-			Debug.WriteLine(b.ToString());
+			Assert.AreEqual(expected, board.GetCell(i, j), " \n--- Expected: " + expected + ". Actual: board.GetCell(i, j): " + board.GetCell(i, j));
 		}
 
 
 		[TestMethod]
-		public void TestSetCellLastException() {
-			// Arrange
+		public void TestSetCellException() {
 			int i = -1;
 			int j = -1;
+			bool first = true;
 
-			// Act
-			b.SetCell(i, j, p);
+			board.SetCell(i, j, first);
 			// Assert is handled by the expected Exception
 		}
 
-		/**********************************************
-		 * GETCELL - Exception is thrown and catched?
-		 *********************************************/ 
 		[TestMethod]
 		public void TestGetCellException() {
-			string result;
-
-			// Arrange
 			int i = -1;
 			int j = -1;
 
-			// Act
-			result = b.GetCell(i, j);
+			string result = board.GetCell(i, j);
 			// Assert is handled by the expected Exception
 		}
 
@@ -111,8 +105,7 @@ namespace Tests {
 		public void TestCopy() {
 			board.Reset();
 
-			p.Reset(true);
-			b.Reset();
+			string[,] expected = board.Copy();
 
 			for (int i=0; i<DIM; i++)
 				for(int j=0; j<DIM; j++)
@@ -124,136 +117,56 @@ namespace Tests {
 			Assert.AreNotEqual(expected[1, 1], board.GetCell(1, 1), "\n--- Expected: expected[1, 1] = " + expected[1, 1] + ". Actual: board.GetCell(1, 1) = " + board.GetCell(1, 1));
 		}
 
-		/**********************************************
-		 * GETEMPTIES - Returns empty cells?
-		 *********************************************/ 
+
 		[TestMethod]
 		public void TestGetEmpties() {
-			string[,] copy;
-			// Arrange
-			Random r = new Random();
-			p.Reset(true);
-			b.Reset();
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					p.IsFirst = (r.Next(2) == 0) ? true : false;
-					b.SetCell(i, j, p);
-				}
-			}
+			string[,] randomBoard = RandomBoard();
+			randomBoard[1, 1]     = "";
 
-			copy = b.Copy();
-			copy[2, 2] = "";
-			int[] expected = new int[] { 2, 2 };
-			Board resultBoard = new Board(DIM);
-			resultBoard.SetBoard(copy);
+			board.Reset();
+			board.SetBoard(randomBoard);
 
-
-			// Act
 			List<int[]> empties = new List<int[]>();
-			empties = resultBoard.GetEmpties();
+			empties = board.GetEmpties();
 
-			// Assert 
-			Assert.AreEqual(1, empties.Count, " \n--- Expected: 1. Actual empties.Count = " + empties.Count);
-			CollectionAssert.AreEqual(expected, empties[0]);
+			Assert.AreEqual(1, empties.Count, " \n--- Expected: 1. Actual: empties.Count = " + empties.Count);
 		}
 
 
 		[TestMethod]
-		public void TestPaste() {
+		public void TestCheckRow() {
+			board.Reset();
+			int row = 0;
+			for (int j=0; j<DIM; j++)
+				board.SetCell(row, j, true);
+			bool expected = true;
 
-			// Arrange
-			Random r       = new Random();
-			Board expected = new Board(DIM);
-			p.Reset(true);
-			b.Reset();
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					p.IsFirst = (r.Next(2) == 0) ? true : false;
-					expected.SetCell(i, j, p);
-				}
-			}
+			bool check = board.CheckRow("X", row);
 
-			// Act
-			b.Paste(expected.GetBoard());
-
-			// Assert
-			for (int i=0; i<DIM; i++)
-				CollectionAssert.AreEqual(expected.GetLine(LineType.ROW, i), b.GetLine(LineType.ROW, i));
-
-			// Act
-			p.IsFirst = (b.GetCell(1,1) == "X") ? false : true;
-			expected.SetCell(1, 1, p);
-
-			// Assert
-			Assert.AreNotEqual(expected.GetCell(1,1), b.GetCell(1,1), " \n--- Expected: not Equal. Actual expected.GetCell(1,1) = " + expected.GetCell(1,1) + ", b.GetCell(1,1) = " + b.GetCell(1,1));
+			Assert.AreEqual(expected, check, " \n--- Expected: " + expected + ". Actual: check = " + check);
 		}
 	
 		[TestMethod]
-		public void TestGetBoard() {
-			string[,] result;
-
-			// Arrange
-			Random r = new Random();
-			Board resultBoard = new Board(DIM);
-			p.Reset(true);
-			b.Reset();
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					p.IsFirst = (r.Next(2) == 0) ? true : false;
-					b.SetCell(i, j, p);
-				}
-			}
-
-			// Act
-			result = b.GetBoard();
-			resultBoard.SetBoard(result);
-
-			// Assert
+		public void TestCheckCol() {
+			board.Reset();
+			int col = 0;
 			for (int i=0; i<DIM; i++)
-				CollectionAssert.AreEqual(b.GetLine(LineType.ROW, i), resultBoard.GetLine(LineType.ROW, i));
-			
-			// Act
-			p.IsFirst = (b.GetCell(1,1) == "X") ? false : true;
-			resultBoard.SetCell(1, 1, p);
+				board.SetCell(i, col, true);
+			bool expected = true;
 
-			// Assert
-			Assert.AreEqual(b.GetCell(1,1), resultBoard.GetCell(1,1), " \n--- Expected: b.GetCell(1,1) = " + b.GetCell(1,1) + ". Actual resultBoard.GetCell(1,1) = " + resultBoard.GetCell(1,1));
+			bool check = board.CheckCol("X", col);
+
+			Assert.AreEqual(expected, check, " \n--- Expected: " + expected + ". Actual: check = " + check);
 		}
-
-		/**********************************************
-		 * COPY - Copies only the board contents?
-		 *********************************************/ 
+		
 		[TestMethod]
-		public void TestCopy() {
-			string[,] result;
-
-			// Arrange
-			Random r = new Random();
-			Board resultBoard = new Board(DIM);
-			p.Reset(true);
-			b.Reset();
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					p.IsFirst = (r.Next(2) == 0) ? true : false;
-					b.SetCell(i, j, p);
-				}
-			}
-
-			// Act
-			result = b.Copy();
-			resultBoard.SetBoard(result);
-
-			// Assert
+		public void TestCheckDia() {
+			board.Reset();
 			for (int i=0; i<DIM; i++)
-				CollectionAssert.AreEqual(b.GetLine(LineType.ROW, i), resultBoard.GetLine(LineType.ROW, i));
-			
-			// Act
-			result[1,1] = (b.GetCell(1,1) == "X") ? "O" : "X";
+				board.SetCell(i, i, true);
+			bool expected = true;
 
-			// Assert
-			Assert.AreNotEqual(b.GetCell(1,1), result[1,1], " \n--- Expected: not equal. Actual b.GetCell(1,1) = " + b.GetCell(1,1) + ", result[1,1] = " + result[1,1]);
-		}
-
+			bool check = board.CheckDia("X");
 
 			Assert.AreEqual(expected, check, " \n--- Expected: " + expected + ". Actual: check = " + check);
 		}

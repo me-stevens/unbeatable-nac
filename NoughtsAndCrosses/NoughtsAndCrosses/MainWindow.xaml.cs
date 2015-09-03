@@ -28,25 +28,6 @@ namespace NoughtsAndCrosses {
 		private bool clicked;
 
 		public MainWindow() {
-			DIM   = 3;
-
-			board   = new Board(DIM);
-			player1 = new Player();
-			player2 = new Player();
-			ai      = new AI();
-
-			// Convention for the whole application: 
-			// player1 always stores the first player
-			player1.IsFirst = true;
-			player2.IsFirst = false;
-
-			first  = true;
-			winner = false;
-			full   = false;
-
-			// Disable clicks or listen for them
-			clicked = true;
-
 			InitializeComponent();
 		}
 	
@@ -71,28 +52,28 @@ namespace NoughtsAndCrosses {
 			playAgain.Visibility    = Visibility.Hidden;
 			footerlabel1.Visibility = Visibility.Hidden;
 			footerlabel2.Visibility = Visibility.Hidden;
-			PaintWinnerCells();
 		}
 
 		private void NewGame_Click(object sender, RoutedEventArgs e) {
-			player1.Reset(true);
-			player2.Reset(true);
-
-			player1.IsFirst = true;
 
 			FormNew fn = new FormNew();
 			fn.Owner   = this;
 
 			if (fn.ShowDialog() == true) {
-				player1.Name    = fn.Name1;
-				player2.Name    = fn.Name2;
+				// Convention for the whole application: 
+				// player1 always stores the first player
+				player1 = new Player(fn.Name1, fn.IsHuman1, true);
+				player2 = new Player(fn.Name2, fn.IsHuman2, false);
 
-				player1.IsHuman = fn.IsHuman1;
-				player2.IsHuman = fn.IsHuman2;
+				DIM = fn.DIM;
+				gameStats = new GameStats();
 
 				// Update GUI
-				player1name.Text  = player1.Name;
-				player2name.Text  = player2.Name;
+				player1name.Text = fn.Name1;
+				player2name.Text = fn.Name2;
+
+				player1stats.Text = "0 0 0";
+				player2stats.Text = "0 0 0";
 
 				footerlabel1.Visibility = Visibility.Visible;
 				footerlabel2.Visibility = Visibility.Visible;
@@ -101,10 +82,10 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		private void Start() {
-			statusBar.Text       = player1.Name;
-			playAgain.Visibility = Visibility.Hidden;
 
+
+		private void Start() {
+			// Reset everything
 			board.Reset();
 
 			foreach (UIElement child in boardGrid.Children) {
@@ -120,15 +101,16 @@ namespace NoughtsAndCrosses {
 			// Disable clicks or listen for them
 			clicked = true;
 
+			statusBar.Text       = player1.Name;
+			playAgain.Visibility = Visibility.Hidden;
+
 			// If player is a robot, start its turn method
-			if (!player1.IsHuman) {
+			if (!player1.IsHuman)
 				RobotTurn();
-			}
  
 			// If player is a human, wait for a click
-			else {
+			else
 				clicked = false;
-			}
 		}
 
 		private void RobotTurn() {
@@ -173,33 +155,25 @@ namespace NoughtsAndCrosses {
 		
 		private void UpdateGameStatus(int[] pos, int index) {
 
-			SetCellGUI(index);
+			GUISetCell(index);
+			board.SetCell(pos, first);
 
-			if (first)
-				board.SetCell(pos, player1);
-			else 
-				board.SetCell(pos, player2);				
-			full   = (player1.GetPlaced() + player2.GetPlaced() == DIM*DIM);
 			winner = gameStats.IsWinner(board, first);
+			full   = (board.GetEmpties().Count == 0);
 
 			if (winner || full) {
 				clicked = true;
 				GameOver();
 			}
 
-			else if ( ( first && !player2.IsHuman) 
-			       || (!first && !player1.IsHuman) ) {
-				clicked = true;
+			else {
+				// Check the humanity of the next player
+				clicked = ((first && !player2.IsHuman) || (!first && !player1.IsHuman)) ? true : false;
 				first   = !first;
 				statusBar.Text = (first) ? player1.Name : player2.Name;
 
-				RobotTurn();
-			} 
-			
-			else {
-				clicked = false;
-				first   = !first;
-				statusBar.Text = (first) ? player1.Name : player2.Name;
+				if (clicked)
+					RobotTurn();
 			}
 		}
 
@@ -220,14 +194,10 @@ namespace NoughtsAndCrosses {
 		}
 
 		private void PlayAgain_Click(object sender, RoutedEventArgs e) {			
-			// If playing again, do a soft reset
-			player1.Reset(false);
-			player2.Reset(false);
-			
 			Start();
 		}
 
-		private void SetCellGUI(int index) {
+		private void GUISetCell(int index) {
 			try {
 				((TextBlock) boardGrid.Children[index]).Text = (first) ? "X" : "O";
 				((TextBlock) boardGrid.Children[index]).IsEnabled = false;

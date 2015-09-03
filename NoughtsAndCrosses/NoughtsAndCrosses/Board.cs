@@ -30,10 +30,13 @@ namespace NoughtsAndCrosses {
 					board[i, j] = "";
 		}
 
-		public void SetCell(int i, int j, Player player) {
+		public void SetCell(int[] pos, bool first) {
+			SetCell(pos[0], pos[1], first);
+		}
+
+		public void SetCell(int i, int j, bool first) {
 			try {
-				board[i, j]    = (player.IsFirst) ? "X" : "O";
-				player.LastPos = new int[] { i, j };
+				board[i, j] = (first) ? "X" : "O";
 
 			} catch (IndexOutOfRangeException e) {
 				Debug.WriteLine("Index out of range \n\n" + e.Message);
@@ -57,13 +60,6 @@ namespace NoughtsAndCrosses {
 		// Set board by reference
 		public void SetBoard(string[,] newBoard) {
 			board = newBoard;
-		}
-
-		public void Paste(string[,] newBoard) {
-			if (newBoard.GetLength(0) == DIM && newBoard.Length == DIM*DIM) 
-				for (int i=0; i<DIM; i++)
-					for (int j=0; j<DIM; j++)
-						board[i, j] = newBoard[i, j];
 		}
 
 		// Get board by reference
@@ -117,23 +113,5 @@ namespace NoughtsAndCrosses {
 			return true;
 		}
 
-		/**********************************************
-		 * BOARD PRINTER
-		 *********************************************/
-		public override string ToString(){
-			string s = "";
-
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++)
-					s += board[i, j] + "\t";
-				s += "\n";
-			}
-				
-			return "WinnerName: "  + WinnerName  + ", " +
-			       "WinnerLine: "  + WinnerLine  + ", " +
-			       "WinnerIndex: " + WinnerIndex + ", " +
-			       "Board:\n"      + s           + "\n" ;
-		}
-	
 	}
 }
