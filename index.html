@@ -4,12 +4,17 @@ subtitle1: "Unbeatable"
 title:     " Noughts And Crosses "
 subtitle2: "using artificial intelligence"
 ---
-			<p class="excerpt">An implementation of the good ol' Nought and Crosses game, using the MiniMax algorithm to make it unbeatable.</p>
+			<p class="excerpt">An implementation of the Noughts and Crosses game for 3x3 and 4x4 boards, using the MiniMax algorithm.</p>
 
 			<p class="center">
-				<img src="{{ site.baseurl }}/img/win.png" width="698" height="698" alt="Screenshot of a winning board">
+				<img src="{{ site.baseurl }}/img/draw4x4.png" width="698" height="698" alt="Screenshot of a winning board">
 				<a class="btn green" href="https://github.com/me-stevens/unbeatable-nac">Get the code</a>
 			</p>
+
+			<h2>Release notes</h2>
+
+			<p>Version v1.0.0 is available. <a href="https://github.com/me-stevens/unbeatable-nac/blob/master/release-notes.md">What's new</a>.</p>
+
 
 			<h2>Introduction</h2>
 
@@ -19,13 +24,14 @@ subtitle2: "using artificial intelligence"
 				<li>The program allows the user to choose the game type (human v. computer, human v. human, or computer v. computer).</li>
 				<li>The computer player can win or draw, but never lose.</li>
 				<li>The user has the choice of which player goes first.</li>
+				<li>The user can play on a 3x3 or 4x4 board.</li>
 			</ul>
-			<p>I decided to implement a C&#35; GUI for this project.
+			<p>I decided to implement a C&#35; application with a GUI for this project.
 
 
 			<h2>Structure / organization</h2>
 
-			<p>The GUI logic is separated from the GUI-agnostic code, so that the classes can be easily plugged in a console application, for example. It also allows modifications like making the board bigger (work in progress).</p>
+			<p>The GUI logic is separated from the GUI-agnostic code, so that the classes can be easily plugged in a console application, for example. The game can now be played in a 4x4 board as well.</p>
 
 			<p>There are two "<em>conventions</em>": <code class="language-csharp">player1</code> always stores the first player, and the first player's mark is an X.</p>
 
@@ -35,48 +41,70 @@ subtitle2: "using artificial intelligence"
 
 			<ul>
 				<li><strong>Player.cs:</strong>
-					<p>It saves the name of the player, the statistics, and if it's a robot or a human. The property <code class="language-csharp">IsFirst</code> sets both the mark and who is the first player. The <code class="language-csharp">FirstPos</code> and the number of marks <code class="language-csharp">placed</code> can only be set when the <code class="language-csharp">LastPos</code> is set. The <code class="language-csharp">placed</code> property has a protection for the huge increments suffered during the calculations.</p>
-					<p>A player's properties can be soft or hard reset to account for "play again" or "start a new game" situations.</p></p>
+					<p>It saves the name of the player, its turn, and if it's a robot or a human.</p>
 
 				<li><strong>Board.cs:</strong> 
-					<p>Stores the positions in a two dimensional <code class="language-csharp">string</code> array. When a new cell is set, the player's <code class="language-csharp">LastPos</code> is automatically updated, for consistency.</p></li>
+					<p>Stores the marks in a two dimensional <code class="language-csharp">string</code> array.</p></li>
 
+				<li><strong>GameStats.cs:</strong>
+					<p>Checks for a winner and saves the winner stats, i.e., the type and index of the winner line, and the wins/draws/losses.</p></li>
+			</ul>
+
+			<h3>Game engine</h3>
+
+			<ul>
 				<li><strong>AI.cs:</strong> 
-					<p>Implements the <a href="https://en.wikipedia.org/wiki/Minimax">MiniMax algorithm</a>. I decided to keep it in its own class (and method), in case other approaches or strategies different to MiniMax want to be tested. You could then put every strategy in their own method and call it from <code class="language-csharp">CalculateCell()</code>.</p>
+					<p>A class with common methods to be shared by the derived classes. All child classes have a <code class="language-csharp">CalculateCell()</code> method to initialize the relevant variables and a <code class="language-csharp">Algorithm()</code> method for the recursive calculation. The latter is invoked by the former.</p>
+				</li>
 
-					<p>The routine gets the empty cells of the board and places one player on the first cell available. If no line is closed (i.e. that player doesn't win), the routine is called again recursively. The empty cells are retrieved again for the new state of the board (one free cell less and one cell occupied by a player). The opponent player is placed on the first available cell, and the process repeats. Scores are given to the different positions depending on who won; if a player, or an opponent.</p>
+				<li><strong>AIMiniMax.cs:</strong> 
+					<p>The simple MiniMax implementation. Too slow for boards bigger than 3x3.</p>
+				</li>
 
-					<p>It doesn't take the level of depth into account (yet), which would be crucial for bigger N&amp;C boards, as is the case with other games like Othello/Reversi, for example.</p>
-					</li>
-				</ul>
+				<li><strong>AIMiniMaxAlphaBeta.cs:</strong> 
+					<p>The MiniMax implementation with alpha-beta pruning. It works reasonably better than the previous for a 4x4 board up to a depth of 8 levels. It's the one actually used in the game. Other algorithms can be used, updating the proper line in the <code class="language-csharp">RobotTurn()</code> method of the <strong>MainWindow.xaml.cs</strong> class:</p>
+
+					<pre><code class="language-csharp">
+AIMiniMaxAlphaBeta ai = new AIMiniMaxAlphaBeta();
+//AINegaMaxAlphaBeta ai = new AINegaMaxAlphaBeta();
+
+pos = ai.CalculateCell(board, first);
+					</code></pre>
+					<p>To get better results in a big board, specially for the first moves, alpha-beta is not enough, since it depends on the order in which children are visited. Initial shallow searches followed by some move-ordering technique, implementing "memory" through transposition tables or any other techniques could be investigated, (but were not used here). <br>&ndash; <span class="small">See also: <a href="#benchmark">rough benchmark</a></span>.</p>
+				</li>
+			</ul>
+
+<!--			<p>The MiniMax algorithm uses the alpha and beta variables to keep track of the good findings and get rid of the branches of the node tree that won't improve the odds of finding a better position. While this pruning is not needed for the 3x3 board, the simple MiniMax algorithm will take forever to finish a calculation in a 4x4 board. The alpha-beta gives an exponential speedup, since it allows doubling the depth of a simple MiniMax search.</p>-->
+
+<!--			<p>For even bigger boards, like Othello/Reversi, alpha-beta wouldn't be enough, and other techniques could be used together with it (move-ordering, transposition tables, etc.).</p> -->
 
 			<h3>GUI related</h3>
 
 			<ul>
 				<li><strong>MainWindow.xaml.cs:</strong>
 					<p class="center">
-						<img src="{{ site.baseurl }}/img/draw.png" width="698" height="698" alt="Screenshot of the main window showing a draw.">
+<!--						<img src="{{ site.baseurl }}/img/draw.png" width="698" height="698" alt="Screenshot of the main window showing a draw.">-->
 					</p>
 					<p>Connects the GUI-agnostic part of the application and the GUI-related part. It uses a <code class="language-csharp">UniformGrid</code> and lightweight <code class="language-csharp">TextBlock</code>s for the grid. The menu uses two modal dialogs, <strong>FormNew.xaml.cs</strong>, to fetch the relevant data and start a new game, and  <strong>MenuPopUps.xaml.cs</strong>, to provide extra information.</p>
 
 					<p>To  set a position in the board, two variables are needed: an <code class="language-csharp">index</code> for the GUI grid, and a pair <code class="language-csharp">pos {i, j}</code>for the board, where <code class="language-csharp">i</code> is the row index and <code class="language-csharp">j</code> is the column index.</p>
 
-					<p>The human and robot logic flows are very similar:</p>
+					<p>The human and robot logic flows are very similar.
 
-					<ul>
-						<li>Calculate the position. If a human, the position is the index of the clicked control. If a robot, the position is a pair calculated by the artificial-intelligence  algorithm.</li>
-						<li>Update the GUI grid and the board with the position.</li>
-						<li>Check for winner or full board.</li>
-						<li>If no winner or full, check the <em>humanity</em> of the next player to decide if we launch the AI routine or listen for new clicks.</li>
-					</ul>
+<!--					<ul>-->
+<!--						<li>Get the position. If a human, the position is the index of the clicked control. If a robot, the position is a pair calculated by the artificial-intelligence  algorithm.</li>-->
+<!--						<li>Update the GUI grid and the board with the position.</li>-->
+<!--						<li>Check for winner or full board.</li>-->
+<!--						<li>If no winner or full board, check the <em>humanity</em> of the next player to decide if we launch the AI routine or listen for new clicks.</li>-->
+<!--					</ul>-->
 
-					<p>The first point is covered by <code class="language-csharp">RobotTurn()</code> and <code class="language-csharp">HumanTurn()</code>. The rest of the points are covered by <code class="language-csharp">UpdateGameStatus()</code>.</p>
+					They are covered by <code class="language-csharp">RobotTurn()</code> and <code class="language-csharp">HumanTurn()</code>, at the end of which <code class="language-csharp">UpdateGameStatus()</code> is called.</p>
 				</li>
 
 				<li><strong>FormNew.xaml.cs:</strong>
-						<p class="center"><img src="{{ site.baseurl }}/img/formNew.png" width="558" height="368" alt="Screenshot of the form that fetches the variables to start a new game."></p>
+						<p class="center"><img src="{{ site.baseurl }}/img/formNew4x4.png" width="558" height="498" alt="Screenshot of the form that fetches the variables to start a new game."></p>
 
-					<p>It allows the user to choose human or robot players and set who goes first. It also provides inputs for the human's names. In case names are not provided, defaults are used. The GUI is updated with every click on a radio button.</p>
+					<p>It allows the user to choose human or robot players and set who goes first. It also provides inputs for the human's names. In case names are not provided, defaults are used. The GUI is updated with every click on a radio button. Finally, the user can select the board size.</p>
 				</li>
 
 				<li><strong>MenuPopUps.xaml.cs:</strong>
@@ -88,23 +116,65 @@ subtitle2: "using artificial intelligence"
 				</li>
 			</ul>
 
-
-
+<!--			<img src="{{ site.baseurl }}/img/classDiagram.png" width="1061" height="642" alt="Class Diagram">-->
 
 			<h2>Unit Tests</h2>
 
 			<p>There are one file per class and one or more methods per class method.</p>
+			<p>The testing was done with a mix of unit tests, the Visual Studio debugger, and good ol' paper and pencil.</p>
+
+<!--			<img src="{{ site.baseurl }}/img/debugger.png" width="1002" height="1036" alt="Screenshot of the Visual Studio debugger">-->
 
 			<h2>To do</h2>
 
 			<ul>
-				<li>Extend to bigger boards. Implement depth control.</li>
-				<li>Add more tests.</li>
-				<li>Add animations? Or delay the bots to make them look like they are "thinking".</li>
-				<li>Implement bindings. This is a bit tricky because the binding can only be made to one-dimensional arrays, which would need a restructuration of the <code class="language-csharp">Board</code> class, and they should also implement the <code class="language-csharp">INotifyPropertyChanged</code> interface, which would make the application non-GUI agnostic. It's also known to have <a href="http://justinangel.net/automagicallyimplementinginotifypropertychanged">other problems</a>.
+				<li>Implement move-ordering? Check the Dictionary or HashMap classes out.</li>
+				<li>Find a good code profiler.</li>
+				<li>Implement the MVVM pattern for the views.</li>
+				<li>Implement bindings. This is a bit tricky because the binding can only be made to one-dimensional arrays, which would need a restructuration of the <code class="language-csharp">Board</code> class, and they should also implement the <code class="language-csharp">INotifyPropertyChanged</code> interface, which would make the application non-GUI agnostic.</li>
 			</ul>
+
+			<h2 id="benchmark">Rough benchmarking</h2>
+
+			<p>How much faster is "<em>faster</em>"? I performed a very rough test with the help of the <code class="language-csharp">Stopwatch</code> class, letting the computer play against itself on a 64-bit Intel Core i7 @2.40GHz and 8Gb RAM running Windows 7. These are the results for <strong>depth = 8:</strong></p>
+
+			<table class="table uncollapse" summary="Time in milliseconds elapsed per computer turn.">
+				<caption class="wrapper">Time in milliseconds elapsed per computer turn.</caption>
+					<thead class="center">
+						<tr>
+							<th>Turn</th>
+							<th>NegaMax (3x3)</th>
+							<th>MiniMax (3x3)</th>
+							<th>NegaMax<br>&alpha;-&beta; (3x3)</th>
+							<th>MiniMax<br>&alpha;-&beta; (3x3)</th>
+							<th>NegaMax<br>&alpha;-&beta; (4x4)</th>
+							<th>MiniMax<br>&alpha;-&beta; (4x4)</th>
+						</tr>
+					</thead>
+					<tbody style="text-align:right">
+						<tr><td class="center"> 1</td><td>921.5219</td><td>914.1616</td><td>71.9640</td><td>37.2818</td><td>1487.5512</td><td>1450.5537</td></tr>
+						<tr><td class="center"> 2</td><td>122.3636</td><td>131.0587</td><td>16.6207</td><td>15.3873</td><td> 649.3235</td><td> 648.4331</td></tr>
+						<tr><td class="center"> 3</td><td> 45.4589</td><td> 23.9258</td><td> 4.3286</td><td> 4.9744</td><td>1883.5635</td><td>1899.4341</td></tr>
+						<tr><td class="center"> 4</td><td>  2.1258</td><td>  2.8447</td><td> 0.4310</td><td> 0.4447</td><td> 489.4397</td><td> 492.3388</td></tr>
+						<tr><td class="center"> 5</td><td>  1.2838</td><td>  1.3201</td><td> 0.3635</td><td> 0.1428</td><td> 329.4927</td><td> 324.9467</td></tr>
+						<tr><td class="center"> 6</td><td>  0.1633</td><td>  0.3314</td><td> 0.1398</td><td> 0.1265</td><td> 148.9294</td><td> 147.3261</td></tr>
+						<tr><td class="center"> 7</td><td>  0.0949</td><td>  0.1240</td><td> 0.1090</td><td> 0.0816</td><td> 110.4120</td><td>  72.6110</td></tr>
+						<tr><td class="center"> 8</td><td>  0.0573</td><td>  0.0560</td><td> 0.0209</td><td> 0.0226</td><td>  59.3166</td><td>  57.3879</td></tr>
+						<tr><td class="center"> 9</td><td>  0.0303</td><td>  0.0128</td><td> 0.0277</td><td> 0.0295</td><td>  32.8582</td><td>  21.3582</td></tr>
+						<tr><td class="center">10</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   7.4715</td><td>   7.4809</td></tr>
+						<tr><td class="center">11</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.8514</td><td>   2.6638</td></tr>
+						<tr><td class="center">12</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.9908</td><td>   0.9878</td></tr>
+						<tr><td class="center">13</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.3262</td><td>   0.3275</td></tr>
+						<tr><td class="center">14</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.0500</td><td>   0.0555</td></tr>
+						<tr><td class="center">15</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.0688</td><td>   0.0667</td></tr>
+						<tr><td class="center">16</td><td>        </td><td>        </td><td>       </td><td>       </td><td>   0.0320</td><td>   0.0320</td></tr>
+					</tbody>
+			</table>
+
+			<p>NegaMax and MiniMax oscillate in between similar (average) values inside a window of systematic variations. However, compared to their pruning versions, the speed-up is evident.</p>
 
 			<p class="center">
 				<a class="btn green" href="https://github.com/me-stevens/unbeatable-nac">Get the code</a>
 			</p>
+
 
