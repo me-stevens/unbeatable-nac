@@ -45,26 +45,7 @@ namespace Tests {
 			Debug.WriteLine(b.ToString());
 		}
 
-		/*****************************************************
-		 * SETCELL - LastPos is set with the cell?
-		 *****************************************************/ 
-		[TestMethod]
-		public void TestSetCellLastPos() {
-			// Arrange
-			int i = r.Next(DIM);
-			int j = r.Next(DIM);
-			int[] pexpected = new int[] { i, j }; 
 
-			// Act
-			b.SetCell(pexpected, p);
-
-			// Assert
-			CollectionAssert.AreEqual(pexpected, p.LastPos);
-		}
-
-		/**********************************************
-		 * SETCELL - Exception is thrown and catched?
-		 *********************************************/ 
 		[TestMethod]
 		public void TestSetCellLastException() {
 			// Arrange
@@ -176,41 +157,7 @@ namespace Tests {
 			CollectionAssert.AreEqual(expected, empties[0]);
 		}
 
-		/*****************************************************
-		 * SETBOARD - Saves a reference to another board?
-		 *****************************************************/ 
-		[TestMethod]
-		public void TestSetBoard() {
 
-			// Arrange
-			Random r       = new Random();
-			Board expected = new Board(DIM);
-			p.Reset(true);
-			b.Reset();
-			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					p.IsFirst = (r.Next(2) == 0) ? true : false;
-					expected.SetCell(i, j, p);
-				}
-			}
-
-			// Act
-			b.SetBoard(expected.GetBoard());
-
-			// Assert
-			for (int i=0; i<DIM; i++)
-				CollectionAssert.AreEqual(expected.GetLine(LineType.ROW, i), b.GetLine(LineType.ROW, i));
-
-			// Act
-			p.IsFirst = (b.GetCell(1,1) == "X") ? false : true;
-			expected.SetCell(1, 1, p);
-
-			// Assert
-			Assert.AreEqual(expected.GetCell(1,1), b.GetCell(1,1), " \n--- Expected: not Equal. Actual expected.GetCell(1,1) = " + expected.GetCell(1,1) + ", b.GetCell(1,1) = " + b.GetCell(1,1));
-		}
-		/*****************************************************
-		 * PASTE - Copies the contents of a board?
-		 *****************************************************/ 
 		[TestMethod]
 		public void TestPaste() {
 
@@ -241,9 +188,6 @@ namespace Tests {
 			Assert.AreNotEqual(expected.GetCell(1,1), b.GetCell(1,1), " \n--- Expected: not Equal. Actual expected.GetCell(1,1) = " + expected.GetCell(1,1) + ", b.GetCell(1,1) = " + b.GetCell(1,1));
 		}
 	
-		/**********************************************
-		 * GETBOARD - Gets a reference to the board?
-		 *********************************************/ 
 		[TestMethod]
 		public void TestGetBoard() {
 			string[,] result;

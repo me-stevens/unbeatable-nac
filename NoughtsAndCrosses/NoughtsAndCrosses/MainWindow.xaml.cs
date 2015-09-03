@@ -94,9 +94,6 @@ namespace NoughtsAndCrosses {
 				player1name.Text  = player1.Name;
 				player2name.Text  = player2.Name;
 
-				player1stats.Text = player1.Wins + " " + player1.Draws + " " + player1.Losses;
-				player2stats.Text = player2.Wins + " " + player2.Draws + " " + player2.Losses;
-				
 				footerlabel1.Visibility = Visibility.Visible;
 				footerlabel2.Visibility = Visibility.Visible;
 
@@ -113,7 +110,7 @@ namespace NoughtsAndCrosses {
 			foreach (UIElement child in boardGrid.Children) {
 				((TextBlock) child).Text      = "";
 				((TextBlock) child).IsEnabled = true;
-				((TextBlock) child).Style     = (Style)Resources["cells"] as Style;
+				((TextBlock) child).Style     = (Style)Resources["Cells"] as Style;
 			}
 
 			first   = true;

@@ -10,33 +10,36 @@
 	<Grid>
 
 		<!-- LEFT BORDER: Choose players -->
-		<Border x:Name="borderL" Style="{StaticResource borderL}">
+		<Border x:Name="borderL" Style="{StaticResource BorderL}">
 			<StackPanel Orientation="Vertical">
-				<TextBlock Style="{StaticResource titleL}" Text="Choose players"/>
-				<RadioButton x:Name="players1" Style="{StaticResource radiobuttons}" Content="You vs. Computer" GroupName="players" Checked="players1_Checked"/>
-				<RadioButton x:Name="players2" Style="{StaticResource radiobuttons}" Content="You vs. Friend" GroupName="players" Checked="players2_Checked"/>
-				<RadioButton x:Name="players3" Style="{StaticResource radiobuttons}" Content="Computer vs. Computer" GroupName="players" Checked="players3_Checked"/>
+				<TextBlock Style="{StaticResource TitleL}" Text="Choose players"/>
+				<RadioButton x:Name="players1" Style="{StaticResource RadioButtons}" Content="You vs. Computer"      GroupName="players" Checked="players1_Checked"/>
+				<RadioButton x:Name="players2" Style="{StaticResource RadioButtons}" Content="You vs. Friend"        GroupName="players" Checked="players2_Checked"/>
+				<RadioButton x:Name="players3" Style="{StaticResource RadioButtons}" Content="Computer vs. Computer" GroupName="players" Checked="players3_Checked"/>
 			</StackPanel>
 		</Border>
 
 		<!-- RIGHT BORDER: Who starts -->
-		<Border x:Name="borderR" Style="{StaticResource borderR}">
+		<Border x:Name="borderR" Style="{StaticResource BorderR}">
 			<StackPanel Orientation="Vertical">
-				<TextBlock Style="{StaticResource titleR}" Text="Who's first?"/>
-				<RadioButton x:Name="first1"   Style="{StaticResource radiobuttons}" GroupName="first"/>
-				<RadioButton x:Name="first2"   Style="{StaticResource radiobuttons}" GroupName="first"/>
+				<TextBlock Style="{StaticResource TitleR}" Text="Who's first?"/>
+				<RadioButton x:Name="first1"   Style="{StaticResource RadioButtons}" GroupName="first"/>
+				<RadioButton x:Name="first2"   Style="{StaticResource RadioButtons}" GroupName="first"/>
 
-				<TextBlock x:Name="name1title" Style="{StaticResource nameTitle}" Text="Your name:"/>
-				<TextBox   x:Name="name1"      Style="{StaticResource nameBox}"   Text="{Binding Name1, ElementName=newGame}"></TextBox>
+				<TextBlock x:Name="name1title" Style="{StaticResource NameTitle}" Text="Your name:"/>
+				<TextBox   x:Name="name1box"   Style="{StaticResource NameBox}"></TextBox>
 
-				<TextBlock x:Name="name2title" Style="{StaticResource nameTitle}" Text="Your friend's name:"/>
-				<TextBox   x:Name="name2"      Style="{StaticResource nameBox}"   Text="{Binding Name2, ElementName=newGame}"></TextBox>
+				<TextBlock x:Name="name2title" Style="{StaticResource NameTitle}" Text="Your friend's name:"/>
+				<TextBox   x:Name="name2box"   Style="{StaticResource NameBox}"></TextBox>
+			</StackPanel>
+		</Border>
+
 			</StackPanel>
 		</Border>
 
 		<!-- DIALOG BUTTONS -->
-		<Button x:Name="ok"     Style="{StaticResource ok}"     IsDefault="True" Click="ok_Click"/>
-		<Button x:Name="cancel" Style="{StaticResource cancel}" IsCancel="True" Click="cancel_Click" />
+		<Button x:Name="ok"     Style="{StaticResource Ok}"     IsDefault="True" Click="ok_Click"/>
+		<Button x:Name="cancel" Style="{StaticResource Cancel}" IsCancel="True" Click="cancel_Click" />
 
 	</Grid>
 </Window>

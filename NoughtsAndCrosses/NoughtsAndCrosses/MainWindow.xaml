@@ -3,42 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="nac" x:Class="NoughtsAndCrosses.MainWindow"
-        Title="Noughts and Crosses" Height="700" Width="700" Loaded="MainWindow_Loaded">
+        Title="Noughts and Crosses" Height="400" Width="400" Loaded="MainWindow_Loaded">
 
 	<Window.Resources>
 		<ResourceDictionary Source="Styles.xaml" />
 	</Window.Resources>
 
-	<Grid>
+	<StackPanel>
 
 		<!--   MENU BAR   -->
 		<ToolBar Style="{StaticResource ToolBar}">
-			<Button x:Name="newGame"      Content="New Game"     Style="{StaticResource MenuButton}" Click="NewGame_Click" />
-			<Button x:Name="instructions" Content="Instructions" Style="{StaticResource MenuButton}" Click="Instructions_Click" />
-			<Button x:Name="about"        Content="About"        Style="{StaticResource MenuButton}" Click="About_Click" />
+			<Button Content="New Game"     Style="{StaticResource MenuButton}" Click="NewGame_Click" />
+			<Button Content="Instructions" Style="{StaticResource MenuButton}" Click="Instructions_Click" />
+			<Button Content="About"        Style="{StaticResource MenuButton}" Click="About_Click" />
 		</ToolBar>
 
 		<!--   STATUS BAR   -->
-		<TextBlock x:Name="statusBar" Style="{StaticResource statusBar}" />
+		<TextBlock x:Name="statusBar" Style="{StaticResource StatusBar}" />
 
 		<!--   BOARD GRID   -->
-		<Border x:Name="border" Margin="0,100,0,0" Height="420" Width="420" HorizontalAlignment="Center" VerticalAlignment="Top">
-			<Grid>
-				<UniformGrid x:Name="boardGrid" MouseDown="HumanTurn" />
-			</Grid>
-		</Border>
+		<Grid>
+			<UniformGrid x:Name="boardGrid" Style="{StaticResource BoardGrid}" MouseDown="HumanTurn" />
+		</Grid>
 
 		<!--   FOOTER   -->
-		<TextBlock x:Name="player1name"  Style="{StaticResource player1Name}"  />
-		<TextBlock x:Name="player1stats" Style="{StaticResource player1Stats}" />
-		<TextBlock x:Name="footerlabel1" Style="{StaticResource footerLabel1}"/>
+		<Grid VerticalAlignment="Bottom" Height="120">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-		<Button    x:Name="playAgain"    Style="{StaticResource playAgain}" Click="PlayAgain_Click" />
+			<StackPanel Grid.Column="0">
+				<TextBlock x:Name="player1name"  Style="{StaticResource PlayerName}"  />
+				<TextBlock x:Name="player1stats" Style="{StaticResource PlayerStats}" />
+				<TextBlock x:Name="footerlabel1" Style="{StaticResource FooterLabel}" />
+			</StackPanel>
 
-		<TextBlock x:Name="player2name"  Style="{StaticResource player2Name}" />
-		<TextBlock x:Name="player2stats" Style="{StaticResource player2Stats}" />
-		<TextBlock x:Name="footerlabel2" Style="{StaticResource footerLabel2}" />
+			<StackPanel Grid.Column="1">
+				<Button    x:Name="playAgain"    Style="{StaticResource PlayAgain}" Click="PlayAgain_Click" />
+			</StackPanel>
 
-	</Grid>
+			<StackPanel Grid.Column="2">
+				<TextBlock x:Name="player2name"  Style="{StaticResource PlayerName}"  />
+				<TextBlock x:Name="player2stats" Style="{StaticResource PlayerStats}" />
+				<TextBlock x:Name="footerlabel2" Style="{StaticResource FooterLabel}" />
+			</StackPanel>
+		</Grid>
+
+	</StackPanel>
 
 </Window>

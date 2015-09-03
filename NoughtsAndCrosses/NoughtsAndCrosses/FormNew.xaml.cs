@@ -39,10 +39,10 @@ namespace NoughtsAndCrosses {
 			first2.Content = robot1;
 
 			name1title.Visibility = Visibility.Visible;
-			name1.Visibility      = Visibility.Visible;
+			name1box.Visibility   = Visibility.Visible;
 
 			name2title.Visibility = Visibility.Hidden;
-			name2.Visibility      = Visibility.Hidden;
+			name2box.Visibility   = Visibility.Hidden;
 		}
 
 
@@ -51,10 +51,10 @@ namespace NoughtsAndCrosses {
 			first2.Content = robot1;
 
 			name1title.Visibility = Visibility.Visible;
-			name1.Visibility      = Visibility.Visible;
+			name1box.Visibility   = Visibility.Visible;
 
 			name2title.Visibility = Visibility.Hidden;
-			name2.Visibility      = Visibility.Hidden;
+			name2box.Visibility   = Visibility.Hidden;
 		}
 
 		private void players2_Checked(object sender, RoutedEventArgs e) {
@@ -62,10 +62,10 @@ namespace NoughtsAndCrosses {
 			first2.Content = friend;
 
 			name1title.Visibility = Visibility.Visible;
-			name1.Visibility      = Visibility.Visible;
+			name1box.Visibility   = Visibility.Visible;
 
 			name2title.Visibility = Visibility.Visible;
-			name2.Visibility      = Visibility.Visible;
+			name2box.Visibility   = Visibility.Visible;
 		}
 
 		private void players3_Checked(object sender, RoutedEventArgs e) {
@@ -96,7 +96,7 @@ namespace NoughtsAndCrosses {
 				IsHuman1 = true;
 				IsHuman2 = false;
 
-				Name1 = (name1.Text == "") ? you : name1.Text;
+				Name1 = (name1box.Text == "") ? you : name1box.Text;
 				Name2 = robot1;
 			} 
 			
@@ -104,8 +104,8 @@ namespace NoughtsAndCrosses {
 				IsHuman1 = true;
 				IsHuman2 = true;
 
-				Name1 = (name1.Text == "") ? you    : name1.Text;
-				Name2 = (name2.Text == "") ? friend : name2.Text;
+				Name1 = (name1box.Text == "") ? you    : name1box.Text;
+				Name2 = (name2box.Text == "") ? friend : name2box.Text;
 			} 
 			
 			else if ((bool) players3.IsChecked) {

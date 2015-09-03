@@ -8,8 +8,8 @@
 	</Window.Resources>
 
 	<Grid>
-		<TextBlock x:Name="title" Style="{StaticResource titles}" />
-		<TextBlock x:Name="content" HorizontalAlignment="Left" Margin="31,61,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="179" Width="232"/>
-
+		<TextBlock x:Name="title"   Style="{StaticResource Titles}" />
+		<TextBlock x:Name="content" Style="{StaticResource Content}" />
 	</Grid>
+
 </Window>

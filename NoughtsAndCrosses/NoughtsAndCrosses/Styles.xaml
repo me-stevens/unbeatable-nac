@@ -19,98 +19,69 @@
 	</Style>
 
 	<!-- This style is used for the Status Label -->
-	<Style x:Key="statusBar" TargetType="TextBlock">
-		<Setter Property="Margin" Value="10,40,10,0" />
+	<Style x:Key="StatusBar" TargetType="TextBlock">
+		<Setter Property="Margin" Value="10,5,10,0" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="FontSize" Value="30" />
 		<Setter Property="FontWeight" Value="300" />
 	</Style>
 
+	<!-- This style is used for the boardGrid -->
+	<Style x:Key="BoardGrid" TargetType="UniformGrid" >
+		<Setter Property="Margin" Value="0,20,0,20" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+	</Style>
+
 	<!-- This style is used for the board cells -->
-	<Style x:Key="cells" TargetType="TextBlock" >
+	<Style x:Key="Cells" TargetType="TextBlock" >
 		<Setter Property="Margin" Value="5" />
 		<Setter Property="Padding" Value="5" />
 		<Setter Property="Foreground" Value="#2980b9" />
 		<Setter Property="Background" Value="LightBlue" />
 		<Setter Property="Text" Value=" " />
 		<Setter Property="FontSize" Value="90" />
-		<!--<Setter Property="FontFamily" Value="Arial, Helvetica, sans-serif" />-->
 		<Setter Property="TextAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 	</Style>
 
 	<!-- This style is used for the winner cells -->
-	<Style x:Key="winner" TargetType="TextBlock" BasedOn="{StaticResource cells}" >
+	<Style x:Key="Winner" TargetType="TextBlock" BasedOn="{StaticResource Cells}" >
 		<Setter Property="Foreground" Value="White" />
 		<Setter Property="Background" Value="YellowGreen" />
 	</Style>
 
 	<!-- This style is used for the player's names -->
-	<Style x:Key="playerName" TargetType="TextBlock" >
-		<Setter Property="Width" Value="100" />
+	<Style x:Key="PlayerName" TargetType="TextBlock" >
+		<Setter Property="TextAlignment" Value="Center" />
+		<Setter Property="TextWrapping" Value="Wrap" />
+		<Setter Property="Margin" Value="0,0,0,10" />
 		<Setter Property="Foreground" Value="#2980b9" />
 		<Setter Property="FontSize" Value="15" />
 		<Setter Property="FontWeight" Value="Bold" />
-		<Setter Property="TextAlignment" Value="Center" />
-		<Setter Property="TextWrapping" Value="Wrap" />
-		<Setter Property="VerticalAlignment" Value="Top" />
-	</Style>
-
-	<Style x:Key="player1Name" TargetType="TextBlock" BasedOn="{StaticResource playerName}" >
-		<Setter Property="HorizontalAlignment" Value="Left" />
-		<Setter Property="Margin" Value="60,540,0,0" />
-	</Style>
-
-	<Style x:Key="player2Name" TargetType="TextBlock" BasedOn="{StaticResource playerName}" >
-		<Setter Property="HorizontalAlignment" Value="Right" />
-		<Setter Property="Margin" Value="0,540,60,0" />
 	</Style>
 
 	<!-- This style is used for the player's stats -->
-	<Style x:Key="playerStats" TargetType="TextBlock" >
-		<Setter Property="Width" Value="100" />
-		<Setter Property="FontSize" Value="30" />
-		<Setter Property="FontWeight" Value="300" />
+	<Style x:Key="PlayerStats" TargetType="TextBlock" >
 		<Setter Property="TextAlignment" Value="Center" />
 		<Setter Property="TextWrapping" Value="Wrap" />
-		<Setter Property="VerticalAlignment" Value="Top" />
-	</Style>
-
-	<Style x:Key="player1Stats" TargetType="TextBlock" BasedOn="{StaticResource playerStats}" >
-		<Setter Property="HorizontalAlignment" Value="Left" />
-		<Setter Property="Margin" Value="60,570,0,0" />
-	</Style>
-
-	<Style x:Key="player2Stats" TargetType="TextBlock" BasedOn="{StaticResource playerStats}" >
-		<Setter Property="HorizontalAlignment" Value="Right" />
-		<Setter Property="Margin" Value="0,570,60,0" />
+		<Setter Property="Margin" Value="0,0,0,10" />
+		<Setter Property="FontSize" Value="30" />
+		<Setter Property="FontWeight" Value="300" />
 	</Style>
 
 	<!-- This style is used for the main window labels -->
-	<Style x:Key="footerLabel" TargetType="TextBlock" >
-		<Setter Property="Width" Value="150" />
+	<Style x:Key="FooterLabel" TargetType="TextBlock">
 		<Setter Property="TextAlignment" Value="Center" />
 		<Setter Property="TextWrapping" Value="Wrap" />
-		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Text" Value="Wins / Draws / Losses" />
-	</Style>
-
-	<Style x:Key="footerLabel1" TargetType="TextBlock" BasedOn="{StaticResource footerLabel}" >
-		<Setter Property="HorizontalAlignment" Value="Left" />
-		<Setter Property="Margin" Value="35,620,0,0" />
-	</Style>
-
-	<Style x:Key="footerLabel2" TargetType="TextBlock" BasedOn="{StaticResource footerLabel}" >
-		<Setter Property="HorizontalAlignment" Value="Right" />
-		<Setter Property="Margin" Value="0,620,35,0" />
 	</Style>
 
 
 	<!-- STYLES FOR THE FORMNEW WINDOW -->
 
 	<!-- This style is used for the Borders -->
-	<Style x:Key="borders" TargetType="Border" >
+	<Style x:Key="Borders" TargetType="Border" >
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Height" Value="235" />
@@ -118,18 +89,24 @@
 		<Setter Property="BorderThickness" Value="1" />
 	</Style>
 
-	<Style x:Key="borderL" TargetType="Border" BasedOn="{StaticResource borders}">
+	<Style x:Key="BorderL" TargetType="Border" BasedOn="{StaticResource Borders}">
 		<Setter Property="Width" Value="297" />
 		<Setter Property="Margin" Value="33,31,0,0" />
 	</Style>
 
-	<Style x:Key="borderR" TargetType="Border" BasedOn="{StaticResource borders}">
+	<Style x:Key="BorderR" TargetType="Border" BasedOn="{StaticResource Borders}">
 		<Setter Property="Width" Value="156" />
 		<Setter Property="Margin" Value="361,31,0,0" />
 	</Style>
 
+	<Style x:Key="BorderB" TargetType="Border" BasedOn="{StaticResource Borders}">
+		<Setter Property="Width"  Value="485" />
+		<Setter Property="Height" Value="100" />
+		<Setter Property="Margin" Value="33,290,0,0" />
+	</Style>
+	
 	<!-- This style is used for the FormNew Titles -->
-	<Style x:Key="titles" TargetType="TextBlock" >
+	<Style x:Key="Titles" TargetType="TextBlock" >
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Margin" Value="10,10,10,10" />
@@ -139,23 +116,23 @@
 		<Setter Property="TextAlignment" Value="Center" />
 	</Style>
 
-	<Style x:Key="titleL" TargetType="TextBlock" BasedOn="{StaticResource titles}">
-		<Setter Property="Width" Value="{Binding Path=ActualWidth, ElementName=borderL}" />
+	<Style x:Key="TitleL" TargetType="TextBlock" BasedOn="{StaticResource Titles}">
+		<Setter Property="Width" Value="{Binding Path=ActualWidth, ElementName=BorderL}" />
 	</Style>
 
-	<Style x:Key="titleR" TargetType="TextBlock" BasedOn="{StaticResource titles}">
-		<Setter Property="Width" Value="{Binding Path=ActualWidth, ElementName=borderR}" />
+	<Style x:Key="TitleR" TargetType="TextBlock" BasedOn="{StaticResource Titles}">
+		<Setter Property="Width" Value="{Binding Path=ActualWidth, ElementName=BorderR}" />
 	</Style>
 
 	<!-- This style is used for the Radio buttons -->
-	<Style x:Key="radiobuttons" TargetType="RadioButton" >
+	<Style x:Key="RadioButtons" TargetType="RadioButton" >
 		<Setter Property="Margin" Value="40,10,40,10" />
 		<Setter Property="FontSize" Value="15" />
 		<Setter Property="FontWeight" Value="300" />
 	</Style>
 
 	<!-- This style is used for the name titles -->
-	<Style x:Key="nameTitle" TargetType="TextBlock" >
+	<Style x:Key="NameTitle" TargetType="TextBlock" >
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Margin" Value="0,5,0,5" />
@@ -164,7 +141,7 @@
 	</Style>
 
 	<!-- This style is used for the name textboxes -->
-	<Style x:Key="nameBox" TargetType="TextBox"  >
+	<Style x:Key="NameBox" TargetType="TextBox"  >
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Width" Value="100" />
@@ -174,7 +151,7 @@
 
 	<!-- This style is used for the FormNew buttons -->
 	<!-- The BasedOn property removes the border -->
-	<Style x:Key="lowerButtons" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" >
+	<Style x:Key="LowerButtons" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" >
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="VerticalAlignment" Value="Top" />
 		<Setter Property="Width" Value="80" />
@@ -185,24 +162,36 @@
 	</Style>
 
 	<!-- This style is used for the OK button -->
-	<Style x:Key="ok" TargetType="Button" BasedOn="{StaticResource  lowerButtons}">
-		<Setter Property="Margin" Value="351,280,0,0" />
+	<Style x:Key="Ok" TargetType="Button" BasedOn="{StaticResource LowerButtons}">
+		<Setter Property="Margin" Value="351,405,0,0" />
 		<Setter Property="Content" Value="OK" />
 	</Style>
 
 	<!-- This style is used for the Cancel button -->
-	<Style x:Key="cancel" TargetType="Button" BasedOn="{StaticResource  lowerButtons}">
-		<Setter Property="Margin" Value="442,280,0,0" />
+	<Style x:Key="Cancel" TargetType="Button" BasedOn="{StaticResource LowerButtons}">
+		<Setter Property="Margin" Value="442,405,0,0" />
 		<Setter Property="Content" Value="Cancel" />
 	</Style>
 
 	<!-- This style is used for the Play again button -->
-	<Style x:Key="playAgain" TargetType="Button" BasedOn="{StaticResource  lowerButtons}">
+	<Style x:Key="PlayAgain" TargetType="Button" BasedOn="{StaticResource LowerButtons}">
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Bottom" />
 		<Setter Property="Width" Value="100" />
-		<Setter Property="Margin" Value="250,0,250,54" />
+		<Setter Property="Margin" Value="0,30,0,0" />
 		<Setter Property="Content" Value="Play again" />
+	</Style>
+
+	<!-- STYLES FOR THE MAIN WINDOW -->
+	
+	<!-- This style is used for the Play again button -->
+	<Style x:Key="Content" TargetType="TextBlock">
+		<Setter Property="Height" Value="179" />
+		<Setter Property="Width" Value="232" />
+		<Setter Property="Margin" Value="31,61,0,0" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="TextWrapping" Value="Wrap" />
 	</Style>
 
 </ResourceDictionary>
