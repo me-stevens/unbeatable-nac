@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -133,7 +134,12 @@ namespace NoughtsAndCrosses {
 			//AINegaMax ai = new AINegaMax();
 			AIMiniMaxAlphaBeta ai = new AIMiniMaxAlphaBeta();
 			//AINegaMaxAlphaBeta ai = new AINegaMaxAlphaBeta();
+
+			//Stopwatch sw = new Stopwatch();
+			//sw.Start();
 			pos = ai.CalculateCell(board, first);
+			//sw.Stop();
+			//Console.WriteLine(sw.Elapsed.TotalMilliseconds );
 
 			// Convert from matrix to index notation
 			index = pos[0]*DIM + pos[1];
