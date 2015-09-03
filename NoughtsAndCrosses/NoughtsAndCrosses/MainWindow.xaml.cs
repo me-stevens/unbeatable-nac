@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-
 
 namespace NoughtsAndCrosses {
 	/// <summary>
@@ -124,15 +122,18 @@ namespace NoughtsAndCrosses {
 				clicked = false;
 		}
 
-		private void RobotTurn() {
+		private async void RobotTurn() {
+			
+			await Task.Delay(300);
 
 			int[] pos;
 			int index;
 
-			if (first)
-				pos = ai.CalculateCell(board, player1, player2);
-			else
-				pos = ai.CalculateCell(board, player2, player1);
+			//AIMiniMax ai = new AIMiniMax();
+			//AINegaMax ai = new AINegaMax();
+			AIMiniMaxAlphaBeta ai = new AIMiniMaxAlphaBeta();
+			//AINegaMaxAlphaBeta ai = new AINegaMaxAlphaBeta();
+			pos = ai.CalculateCell(board, first);
 
 			// Convert from matrix to index notation
 			index = pos[0]*DIM + pos[1];

@@ -1,115 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
+﻿
 namespace NoughtsAndCrosses {
 
-	/**********************************************
-	 * ARTIFICIAL INTELLIGENCE CLASS
-	 *********************************************/
-	class AI {
+	public class AI {
 
-		Board miniMaxBoard;
-		Player player;
-		Player opponent;
+		protected Board tempBoard;
+		protected int DIM;
+		protected bool first;
 
-		bool first;
+		public bool PlaceMarkAndCheckWinner(Board board, int[] tempPos, bool tempFirst) {
+			tempBoard = new Board(DIM);
+			tempBoard.SetBoard(board.Copy());
+			tempBoard.SetCell(tempPos, tempFirst);
 
-		/**********************************************
-		 * CONSTRUCTOR  - INITIALIZE PROPERTIES
-		 *********************************************/
-		public AI() {
-			player  = new Player();
-			opponent = new Player();
-			first   = false;
+			GameStats gameStats = new GameStats();
+			return gameStats.IsWinner(tempBoard, tempFirst);
 		}
 
-		/**********************************************
-		 * CALCULATE OPTIMAL POSITION
-		 *********************************************/
-		public int[] CalculateCell(Board board, Player player, Player opponent) {
-			// Copy the values, not the reference
-			this.player   = player.Copy();
-			this.opponent = opponent.Copy();
+		// MiniMax classes
+		public int Heuristics(bool winner, bool tempFirst) {
+			if (winner && tempFirst == first)
+				return 10;
 
-			// Here, "first" is not the first player,
-			// but the player for which MiniMax is optimising
-			first   = player.IsFirst;
-			int DIM = board.GetDIM();
+			if (winner && tempFirst != first)
+				return -10;
 
-			// If first move, return random corner
-			if (first && player.GetPlaced() == 0) {
-				Random r = new Random();
-				int i    = (r.Next(2) == 0) ? 0 : DIM - 1;
-				int j    = (r.Next(2) == 0) ? 0 : DIM - 1;
-				return new[] { i, j };
-			}
-
-			// Else, call MiniMax
-			int[] pos  = MiniMax(board, this.player, this.opponent);
-
-			return pos;
+			return 0;
 		}
 
-		/**********************************************
-		 * MINIMAX IMPLEMENTATION
-		 *********************************************/
-		public int[] MiniMax(Board board, Player player, Player opponent) {
+		// NegaMax classes
+		public int Heuristics(bool winner) {
+			if (winner)
+				return 10;
+			return 0;
+		}
 
-			// Output variables: pos and score
-			int[] pos = new int[2] { -1, -1 };
-			int score = 0;
-			
-
-			bool tempFirst = player.IsFirst;
-
-			// List of empty cells
-			List<int[]> empties = board.GetEmpties();
-
-			// Let's get the party started
-			for (int i=0; i<empties.Count; i++) {
-
-				// Placeholders for output variables
-				int[] miniMaxPos = empties[i];
-				int tempScore    = 0;
-
-				int DIM      = board.GetDIM();
-				miniMaxBoard = new Board(DIM);
-				miniMaxBoard.SetBoard(board.Copy());
-				miniMaxBoard.SetCell(miniMaxPos, player);
-
-				bool winner = miniMaxBoard.IsWinner(player);
-
-				// If player didn't close a line, check the next branch
-				if (!winner && miniMaxBoard.GetEmpties().Count > 0) {
-					int[] tempResult = MiniMax(miniMaxBoard, opponent, player);
-					tempScore        = tempResult[2];
-				} 
-				
-				// Optimising for the player. Swap the scores to get an "Unbeatable Loser"
-				else if (!winner)
-					tempScore =   0;
-
-				else if (tempFirst == first)
-					tempScore =  10;
-
-				else if (tempFirst != first)
-					tempScore = -10;
-
-				// Update output variables
-				int[] none = new int[2] { -1, -1 };
-				if (pos.SequenceEqual(none)                  ||
-				   (tempFirst == first && tempScore > score) ||
-				   (tempFirst != first && tempScore < score)) {
-					pos   = miniMaxPos;
-					score = tempScore;
-				}
-			}
-
-			return new[] { pos[0], pos[1], score };
+		public void SetFirst(bool value) {
+			first = value;
 		}
 
 	}

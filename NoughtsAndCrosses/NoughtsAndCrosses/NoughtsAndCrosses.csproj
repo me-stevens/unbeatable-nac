@@ -62,11 +62,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AI.cs" />
+    <Compile Include="AIMiniMax.cs" />
+    <Compile Include="AIMiniMaxAlphaBeta.cs" />
+    <Compile Include="AINegaMax.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Board.cs" />
+    <Compile Include="AINegaMaxAlphaBeta.cs" />
     <Compile Include="FormNew.xaml.cs">
       <DependentUpon>FormNew.xaml</DependentUpon>
     </Compile>
@@ -106,6 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
