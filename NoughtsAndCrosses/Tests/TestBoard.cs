@@ -92,106 +92,55 @@ namespace Tests {
 			// Assert is handled by the expected Exception
 		}
 
-		/*****************************************************
-		 * SETLINE: ROW - Returns the correct row?
-		 *****************************************************/
 		[TestMethod]
-		public void TestSetLineROW() {
-			string[] result;
+		public void TestSetBoard() {
+			board.Reset();
+			string[,] expected = RandomBoard();
 
-			// Arrange
-			Random r  = new Random();
-			int index = r.Next(DIM - 1);
+			board.SetBoard(expected);
 
-			string[] expected = new string[3];
-			p.Reset(true);
-			b.Reset();
+			for (int i=0; i<DIM; i++)
+				for(int j=0; j<DIM; j++)
+					Assert.AreEqual(expected[i, j], board.GetCell(i,j), "\n--- Expected:  expected[i, j] = " + expected[i, j] + ". Actual: board.GetCell(i, j) = " + board.GetCell(i, j));
 
-			for (int j=0; j<DIM; j++) {
-				p.IsFirst   = (r.Next(2) == 0) ? true : false;
-				expected[j] = (p.IsFirst) ? "X" : "O";
-				b.SetCell(index, j, p);
-			}
+			string mark    = (board.GetCell(1,1) == "X") ? "O" : "X";
+			expected[1, 1] = mark;
 
-			// Act
-			result = b.GetLine(LineType.ROW, index);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, result);
+			Assert.AreEqual(expected[1, 1], board.GetCell(1, 1), "\n--- Expected: expected[1, 1] = " + expected[1, 1] + ". Actual: board.GetCell(1, 1) = " + board.GetCell(1, 1));
 		}
 
-		/*****************************************************
-		 * SETLINE: COL - Returns the correct column?
-		 *****************************************************/
+	
 		[TestMethod]
-		public void TestSetLineCOL() {
-			string[] result;
+		public void TestGetBoard() {
+			board.Reset();
 
-			// Arrange
-			Random r  = new Random();
-			int index = r.Next(DIM - 1);
+			string[,] expected = board.GetBoard();
 
-			string[] expected = new string[3];
-			p.Reset(true);
-			b.Reset();
+			for (int i=0; i<DIM; i++)
+				for(int j=0; j<DIM; j++)
+					Assert.AreEqual(expected[i, j], board.GetCell(i,j), "\n--- Expected:  expected[i, j] = " + expected[i, j] + ". Actual: board.GetCell(i, j) = " + board.GetCell(i, j));
+			
+			bool first = (expected[1, 1] == "X") ? true : false;
+			board.SetCell(1, 1, !first);
 
-			for (int i=0; i<DIM; i++) {
-				p.IsFirst   = (r.Next(2) == 0) ? true : false;
-				expected[i] = (p.IsFirst) ? "X" : "O";
-				b.SetCell(i, index, p);
-			}
-
-			// Act
-			result = b.GetLine(LineType.COL, index);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, result);
+			Assert.AreEqual(expected[1, 1], board.GetCell(1, 1), "\n--- Expected: expected[1, 1] = " + expected[1, 1] + ". Actual: board.GetCell(1, 1) = " + board.GetCell(1, 1));
 		}
 
-		/*****************************************************
-		 * SETLINE: DIA - Returns the correct diagonal?
-		 *****************************************************/
 		[TestMethod]
-		public void TestSetLineDIA() {
-			string[] result;
-
-			// Arrange - DIA ------------------------------
-			Random r  = new Random();
-			int index = 1;
-
-			string[] expected = new string[3];
-			p.Reset(true);
-			b.Reset();
-
-			for (int i=0, j=0; i<DIM && j<DIM; i++, j++) {
-				p.IsFirst   = (r.Next(2) == 0) ? true : false;
-				expected[i] = (p.IsFirst) ? "X" : "O";
-				b.SetCell(i, j, p);
-			}
-
-			// Act
-			result = b.GetLine(LineType.DIA, index);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, result);
-
-			// Arrange - ANTIDIA ------------------------------
-			index = 2;
+		public void TestCopy() {
+			board.Reset();
 
 			p.Reset(true);
 			b.Reset();
 
-			for (int i=0, j=DIM - 1; i<DIM && j>=0; i++, j--) {
-				p.IsFirst   = (r.Next(2) == 0) ? true : false;
-				expected[i] = (p.IsFirst) ? "X" : "O";
-				b.SetCell(i, j, p);
-			}
+			for (int i=0; i<DIM; i++)
+				for(int j=0; j<DIM; j++)
+					Assert.AreEqual(expected[i, j], board.GetCell(i,j), "\n--- Expected:  expected[i, j] = " + expected[i, j] + ". Actual: board.GetCell(i, j) = " + board.GetCell(i, j));
+			
+			bool first = (expected[1, 1] == "X") ? true : false;
+			board.SetCell(1, 1, !first);
 
-			// Act
-			result = b.GetLine(LineType.DIA, index);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, result);
+			Assert.AreNotEqual(expected[1, 1], board.GetCell(1, 1), "\n--- Expected: expected[1, 1] = " + expected[1, 1] + ". Actual: board.GetCell(1, 1) = " + board.GetCell(1, 1));
 		}
 
 		/**********************************************
@@ -362,126 +311,33 @@ namespace Tests {
 		}
 
 
-		/**********************************************
-		 * ISWINNER - Returns true if there's a winner?
-		 *          - Sets the board's winner variables?
-		 *********************************************/
+			Assert.AreEqual(expected, check, " \n--- Expected: " + expected + ". Actual: check = " + check);
+		}
+		
 		[TestMethod]
-		public void TestIsWinnerROW() {
-			bool result;
+		public void TestCheckAntiDia() {
+			board.Reset();
+			for (int i=0, j=DIM - 1; i<DIM && j>=0; i++, j--)
+				board.SetCell(i, j, true);
+			bool expected = true;
 
-			// Arrange --------------------------
-			p.Name  = "Joe";
-			int row = 0;
+			bool check = board.CheckAntiDia("X");
+
+			Assert.AreEqual(expected, check, " \n--- Expected: " + expected + ". Actual: check = " + check);
+		}
+		
+		
+		
+		private string[,] RandomBoard() {
+			string[,] board = new string[DIM, DIM];
 			for (int i=0; i<DIM; i++) {
-				for (int j=0; j<DIM; j++) {
-					if (i == row)
-						b.SetCell(i, j, p);
+				for (int j=0; j<DIM; j++) {					
+					board[i, j] = (random.Next(2) == 0) ? "X" : "O";
 				}
 			}
-
-			bool expected = true;
-
-			string   expectedName  = p.Name;
-			LineType expectedLine  = LineType.ROW;
-			int      expectedIndex = row;
-			
-			// Act
-			result = b.IsWinner(p);
-
-			// Assert result
-			Assert.AreEqual(expected, result, " \n--- Expected: " + expected + ". Actual b.IsWinner(p): " + result);
-
-			// Assert WinnerName
-			Assert.AreEqual(expectedName,  b.WinnerName,  " \n--- Expected: " + expected + ". Actual b.WinnerName:  " + result);
-			// Assert WinnerLine
-			Assert.AreEqual(expectedLine,  b.WinnerLine,  " \n--- Expected: " + expected + ". Actual b.WinnerLine:  " + result);
-			// Assert WinnerIndex
-			Assert.AreEqual(expectedIndex, b.WinnerIndex, " \n--- Expected: " + expected + ". Actual b.WinnerIndex: " + result);
-		}
-	
-		/**********************************************
-		 * ISWINNER - Returns true if there's a winner?
-		 *          - Sets the board's winner variables?
-		 *********************************************/
-		[TestMethod]
-		public void TestIsWinnerCOL() {
-			bool result;
-
-			// Arrange --------------------------
-			p.Name  = "Joe";
-			int col = 0;
-			for (int j=0; j<DIM; j++) {
-				for (int i=0; i<DIM; i++) {
-					if (j == col)
-						b.SetCell(i, j, p);
-				}
-			}
-
-			bool expected = true;
-
-			string   expectedName  = p.Name;
-			LineType expectedLine  = LineType.COL;
-			int      expectedIndex = col;
-			
-			// Act
-			result = b.IsWinner(p);
-
-			// Assert result
-			Assert.AreEqual(expected, result, " \n--- Expected: " + expected + ". Actual b.IsWinner(p): " + result);
-
-			// Assert WinnerName
-			Assert.AreEqual(expectedName,  b.WinnerName,  " \n--- Expected: " + expected + ". Actual b.WinnerName:  " + result);
-			// Assert WinnerLine
-			Assert.AreEqual(expectedLine,  b.WinnerLine,  " \n--- Expected: " + expected + ". Actual b.WinnerLine:  " + result);
-			// Assert WinnerIndex
-			Assert.AreEqual(expectedIndex, b.WinnerIndex, " \n--- Expected: " + expected + ". Actual b.WinnerIndex: " + result);
+			return board;
 		}
 
-		/**********************************************
-		 * ISWINNER - Returns true if there's a winner?
-		 *          - Sets the board's winner variables?
-		 *********************************************/
-		[TestMethod]
-		public void TestIsWinnerDIA() {
-			bool result;
 
-			// DIA 1 - Arrange --------------------------
-			p.Name  = "Joe";
-
-			//for (int i=0, j=0; i<DIM || j<DIM; i++, j++) {
-			//	b.SetCell(i, j, p);
-			//}
-
-			//bool expected = true;
-
-			//string   expectedName  = p.Name;
-			//LineType expectedLine  = LineType.DIA;
-			//int      expectedIndex = 1;
-			
-			// DIA 2 - Arrange --------------------------
-			for (int i=0, j=DIM - 1; i<DIM || j==0; i++, j--) {
-				b.SetCell(i, j, p);
-			}
-
-			bool expected = true;
-
-			string   expectedName  = p.Name;
-			LineType expectedLine  = LineType.DIA;
-			int      expectedIndex = 2;
-			
-			// Act
-			result = b.IsWinner(p);
-
-			// Assert result
-			Assert.AreEqual(expected, result, " \n--- Expected: " + expected + ". Actual b.IsWinner(p): " + result);
-
-			// Assert WinnerName
-			Assert.AreEqual(expectedName,  b.WinnerName,  " \n--- Expected: " + expected + ". Actual b.WinnerName:  " + result);
-			// Assert WinnerLine
-			Assert.AreEqual(expectedLine,  b.WinnerLine,  " \n--- Expected: " + expected + ". Actual b.WinnerLine:  " + result);
-			// Assert WinnerIndex
-			Assert.AreEqual(expectedIndex, b.WinnerIndex, " \n--- Expected: " + expected + ". Actual b.WinnerIndex: " + result);
-		}	
 	}
 }

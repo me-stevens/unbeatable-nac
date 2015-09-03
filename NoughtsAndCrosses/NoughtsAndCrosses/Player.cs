@@ -1,17 +1,10 @@
 ﻿
-using System;
 namespace NoughtsAndCrosses {
 
 	public class Player {
 
 		public string Name    { set; get; }
-		public bool   IsFirst { set; get; }
 		public bool   IsHuman { set; get; }
-
-		public int Wins   { set; get; }
-		public int Draws  { set; get; }
-		public int Losses { set; get; }
-
 		private int placed;
 
 		private int[] firstPos;
@@ -31,20 +24,15 @@ namespace NoughtsAndCrosses {
 			}
 			get { return lastPos; }
 		}
+		public bool   IsFirst { set; get; }
 
 		public Player() : this("", false, false) {
 			// Uses constructor initializer.
 		}
 
-		public Player(string name, bool isFirst, bool isHuman) {
+		public Player(string name, bool isHuman, bool isFirst) {
 			Name    = name;
-			IsFirst = isFirst;
 			IsHuman = isHuman;
-
-			Wins   = 0;
-			Draws  = 0;
-			Losses = 0;
-
 			placed   = 0;
 			firstPos = new int[] { -1, -1 };
 			lastPos  = new int[] { -1, -1 };
@@ -54,40 +42,25 @@ namespace NoughtsAndCrosses {
 			return placed;
 		}
 
-		public void Reset(bool newGame) {
-
-			if (newGame) {
-				Name    = "";
-				IsFirst = false;
-				IsHuman = false;
 
 				Wins    = 0;
 				Draws   = 0;
 				Losses  = 0;
-			}
-
-			placed   = 0;
-			firstPos = new int[] { -1, -1 };
-			lastPos  = new int[] { -1, -1 };
+			IsFirst = isFirst;
 		}
 
 		public Player Copy() {
 			Player copy  = new Player();
 
 			copy.Name    = Name;
-			copy.IsFirst = IsFirst;
 			copy.IsHuman = IsHuman;
-
-			copy.Wins   = Wins;
-			copy.Draws  = Draws;
-			copy.Losses = Losses;
-
 			// Placed and FirstPos are trickier to copy:
 			if (placed != 0) {
 				copy.LastPos = FirstPos;
 				for (int i=0; i<placed-1; i++)
 					copy.LastPos = LastPos;
 			}
+			copy.IsFirst = IsFirst;
 
 			return copy;
 		}

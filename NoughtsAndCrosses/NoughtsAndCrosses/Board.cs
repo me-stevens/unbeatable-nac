@@ -14,30 +14,20 @@ namespace NoughtsAndCrosses {
 
 		private string[,] board;
 
-		public string   WinnerName  { set; get; }
-		public LineType WinnerLine  { set; get; }
-		public int      WinnerIndex { set; get; }
-
-
 		public Board(int dim) {
 			DIM   = dim;
 			board = new string[DIM, DIM];
-
-			for (int i=0; i<DIM; i++) 
-				for (int j=0; j<DIM; j++) 
-					board[i, j] = "";
-
-			WinnerName  = "";
-			WinnerLine  = LineType.NONE;
-			WinnerIndex = -1;
+			Reset();
 		}
 
 		public int GetDIM() {
 			return DIM;
 		}
 
-		public void SetCell(int[] pos, Player player) {
-			SetCell(pos[0], pos[1], player);
+		public void Reset() {	
+			for (int i=0; i<DIM; i++)
+				for (int j=0; j<DIM; j++)
+					board[i, j] = "";
 		}
 
 		public void SetCell(int i, int j, Player player) {
@@ -88,47 +78,6 @@ namespace NoughtsAndCrosses {
 			return copy;
 		}
 
-		public string[] GetLine(LineType lt, int index) {
-
-			string[] line = new[] {"", "", ""};
-
-			switch (lt) {
-
-				case LineType.ROW:
-					for (int j=0; j<DIM; j++)
-						line[j] = board[index, j];
-					break;
-
-				case LineType.COL:
-					for (int i=0; i<DIM; i++)
-						line[i] = board[i, index];
-					break;
-
-				case LineType.DIA:
-					if (index == 1)
-						for (int i=0, j=0; i<DIM && j<DIM; i++, j++)
-							line[i] = board[i, j];
-
-					else if (index == 2)
-						for (int i=0, j=DIM - 1; i<DIM && j>=0; i++, j--)
-							line[i] = board[i, j];
-						break;
-			}
-			
-			return line;
-		}
-
-		public void Reset() {
-	
-			for (int i=0; i<DIM; i++)
-				for (int j=0; j<DIM; j++)
-					board[i, j] = "";
-
-			WinnerName  = "";
-			WinnerLine  = LineType.NONE;
-			WinnerIndex = -1;
-		}
-	
 		public List<int[]> GetEmpties() {
 			List<int[]> empties = new List<int[]>();
 
@@ -139,75 +88,33 @@ namespace NoughtsAndCrosses {
 
 			return empties;
 		}
-	
-		/**********************************************
-		 * CHECK FOR A WINNER
-		 *********************************************/
-		public bool IsWinner(Player player) {
 
-			string mark = (player.IsFirst)  ? "X" : "O";
-			int count;
+		public bool CheckRow(string mark, int row) {
+			for (int j=0; j<DIM; j++)
+				if (board[row, j] != mark)
+					return false;
+			return true;
+		}
 
-			// Cols 
-			for (int j=0; j<DIM; j++) {
+		public bool CheckCol(string mark, int column) {
+			for (int i=0; i<DIM; i++)
+				if (board[i, column] != mark)
+					return false;
+			return true;
+		}
 
-				count = 0;
-				for (int i=0; i<DIM; i++)
-					if (board[i, j] == mark)
-						count++;
+		public bool CheckDia(string mark) {
+			for (int i=0; i<DIM; i++)
+				if (board[i, i] != mark)
+					return false;
+			return true;
+		}
 
-				if (count == DIM) {
-					WinnerName  = player.Name;
-					WinnerLine  = LineType.COL;
-					WinnerIndex = j;
-					return true;
-				}
-			}
-
-
-			// Rows 
-			for (int i=0; i<DIM; i++) {
-
-				count = 0;
-				for (int j=0; j<DIM; j++)
-					if (board[i, j] == mark)
-						count++;
-
-				if (count == DIM) {
-					WinnerName  = player.Name;
-					WinnerLine  = LineType.ROW;
-					WinnerIndex = i;
-					return true;
-				}
-			}
-	
-			// Diag 
-			count = 0;
-			for (int i=0, j=0; i<DIM && j<DIM; i++, j++)
-				if (board[i, j] == mark)
-					count++;
-
-			if (count == DIM) {
-				WinnerName  = player.Name;
-				WinnerLine  = LineType.DIA;
-				WinnerIndex = 1;
-				return true;
-			}
-
-			// AntiDiag 
-			count = 0;
+		public bool CheckAntiDia(string mark) {
 			for (int i=0, j=DIM - 1; i<DIM && j>=0; i++, j--)
-				if (board[i, j] == mark)
-					count++;
-
-			if (count == DIM) {
-				WinnerName  = player.Name;
-				WinnerLine  = LineType.DIA;
-				WinnerIndex = 2;
-				return true;
-			}
-
-			return false;
+				if (board[i, j] != mark)
+					return false;
+			return true;
 		}
 
 		/**********************************************

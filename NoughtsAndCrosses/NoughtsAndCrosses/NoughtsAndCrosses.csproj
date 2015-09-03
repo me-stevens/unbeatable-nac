@@ -70,6 +70,7 @@
     <Compile Include="FormNew.xaml.cs">
       <DependentUpon>FormNew.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameStats.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

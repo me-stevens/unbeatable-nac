@@ -19,7 +19,7 @@ namespace NoughtsAndCrosses {
 		Board  board;
 		Player player1;
 		Player player2;
-		AI     ai;
+		GameStats gameStats;
 
 		private bool first;
 		private bool winner;
@@ -182,9 +182,8 @@ namespace NoughtsAndCrosses {
 				board.SetCell(pos, player1);
 			else 
 				board.SetCell(pos, player2);				
-
-			winner = (first) ? board.IsWinner(player1) : board.IsWinner(player2);
 			full   = (player1.GetPlaced() + player2.GetPlaced() == DIM*DIM);
+			winner = gameStats.IsWinner(board, first);
 
 			if (winner || full) {
 				clicked = true;
@@ -209,25 +208,16 @@ namespace NoughtsAndCrosses {
 
 		private void GameOver() {
 			if (winner) {
-				statusBar.Text = "Congratulations, " + board.WinnerName + "!";
+				statusBar.Text = "Congratulations, " + ((first) ? player1.Name : player2.Name) + "!";
 				PaintWinnerCells();
 
-				if (first) {
-					player1.Wins++;
-					player2.Losses++;
-				} else {
-					player2.Wins++;
-					player1.Losses++;
-				}
 			} else if (full) {
 				statusBar.Text = "It's a draw!";
-
-				player1.Draws++;
-				player2.Draws++;
+				gameStats.Draws++;
 			}
 
-			player1stats.Text = player1.Wins + " " + player1.Draws + " " + player1.Losses;
-			player2stats.Text = player2.Wins + " " + player2.Draws + " " + player2.Losses;
+			player1stats.Text = gameStats.Wins   + " " + gameStats.Draws + " " + gameStats.Losses;
+			player2stats.Text = gameStats.Losses + " " + gameStats.Draws + " " + gameStats.Wins;
 
 			playAgain.Visibility = Visibility.Visible;
 		}
@@ -253,21 +243,21 @@ namespace NoughtsAndCrosses {
 		private void PaintWinnerCells() {
 			try {
 				// Remember that index = i * cols + j
-				if (board.WinnerLine == LineType.ROW) 
+				if (gameStats.WinnerLine == LineType.ROW) 
 					for (int j=0; j<boardGrid.Columns; j++)
-						((TextBlock) boardGrid.Children[board.WinnerIndex * boardGrid.Columns + j]).Style = (Style) Resources["winner"] as Style;
+						((TextBlock) boardGrid.Children[gameStats.WinnerIndex * boardGrid.Columns + j]).Style = (Style) Resources["Winner"] as Style;
 				
-				else if (board.WinnerLine == LineType.COL)
+				else if (gameStats.WinnerLine == LineType.COL)
 					for (int i=0; i<boardGrid.Rows; i++)
-						((TextBlock) boardGrid.Children[i * boardGrid.Columns + board.WinnerIndex]).Style = (Style) Resources["winner"] as Style;
+						((TextBlock) boardGrid.Children[i * boardGrid.Columns + gameStats.WinnerIndex]).Style = (Style) Resources["Winner"] as Style;
 				
-				else if (board.WinnerLine == LineType.DIA && board.WinnerIndex == 1)
+				else if (gameStats.WinnerLine == LineType.DIA && gameStats.WinnerIndex == 1)
 					for (int i=0; i<boardGrid.Columns; i++)
-						((TextBlock) boardGrid.Children[i * boardGrid.Columns + i]).Style = (Style) Resources["winner"] as Style;
+						((TextBlock) boardGrid.Children[i * boardGrid.Columns + i]).Style = (Style) Resources["Winner"] as Style;
 
-				else if (board.WinnerLine == LineType.DIA && board.WinnerIndex == 2)
+				else if (gameStats.WinnerLine == LineType.DIA && gameStats.WinnerIndex == 2)
 					for (int i=0, j=boardGrid.Columns - 1; i<boardGrid.Rows && j>=0; i++, j--)
-						((TextBlock) boardGrid.Children[i * boardGrid.Columns + j]).Style = (Style) Resources["winner"] as Style;
+						((TextBlock) boardGrid.Children[i * boardGrid.Columns + j]).Style = (Style) Resources["Winner"] as Style;
 
 			} catch (IndexOutOfRangeException e) {
 				Debug.WriteLine("Index out of range \n" + e.Message);
