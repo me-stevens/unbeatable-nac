@@ -268,13 +268,14 @@ namespace NoughtsAndCrosses {
 		private void Instructions_Click(object sender, RoutedEventArgs e) {
 			MenuPopUps mi = new MenuPopUps("instructions");
 			mi.Owner      = this;
-			mi.Show();
+			mi.ShowDialog();
 		}
 
 		private void About_Click(object sender, RoutedEventArgs e) {
 			MenuPopUps mi = new MenuPopUps("about");
 			mi.Owner      = this;
-			mi.Show();
+			mi.ShowDialog();
 		}
+
 	}
 }
