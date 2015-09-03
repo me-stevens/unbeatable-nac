@@ -27,9 +27,6 @@ namespace NoughtsAndCrosses {
 
 		private bool clicked;
 
-		/**************************************************************
-		 * CONSTRUCTOR
-		 **************************************************************/
 		public MainWindow() {
 			DIM   = 3;
 
@@ -53,10 +50,6 @@ namespace NoughtsAndCrosses {
 			InitializeComponent();
 		}
 	
-
-		/**************************************************************
-		 * INITIAL GUI VALUES
-		 **************************************************************/
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
 			statusBar.Text = "Noughts & Crosses";
 
@@ -81,18 +74,12 @@ namespace NoughtsAndCrosses {
 			PaintWinnerCells();
 		}
 
-		/*********************************************************
-		 * MENU ITEM: "NEW GAME" - FETCH VARS. AND START GAME
-		 *********************************************************/
 		private void NewGame_Click(object sender, RoutedEventArgs e) {
-			// If starting a new game, do a hard reset
 			player1.Reset(true);
 			player2.Reset(true);
 
-			// Recover convention after reset
 			player1.IsFirst = true;
 
-			// Launch form
 			FormNew fn = new FormNew();
 			fn.Owner   = this;
 
@@ -117,14 +104,10 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		/*********************************************************
-		 * THE GAME STARTER
-		 *********************************************************/
 		private void Start() {
 			statusBar.Text       = player1.Name;
 			playAgain.Visibility = Visibility.Hidden;
 
-			// Reset boards
 			board.Reset();
 
 			foreach (UIElement child in boardGrid.Children) {
@@ -133,11 +116,11 @@ namespace NoughtsAndCrosses {
 				((TextBlock) child).Style     = (Style)Resources["cells"] as Style;
 			}
 
-			// Reset variables
 			first   = true;
 			winner  = false;
 			full    = false;
 			
+			// Disable clicks or listen for them
 			clicked = true;
 
 			// If player is a robot, start its turn method
@@ -151,9 +134,6 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		/*****************************************************************
-		 * ROBOT TURN
-		 *****************************************************************/
 		private void RobotTurn() {
 
 			int[] pos;
@@ -170,12 +150,8 @@ namespace NoughtsAndCrosses {
 			UpdateGameStatus(pos, index);
 		}
 
-		/*********************************************************
-		 * HUMAN TURN
-		 *********************************************************/
 		private void HumanTurn(object sender, MouseButtonEventArgs e) {
 			try {
-				// If it's not a human's turn or the cell has already been clicked (TextBlock disabled)
 				if (clicked || !((TextBlock) e.Source).IsEnabled)
 					e.Handled = true;
 
@@ -198,13 +174,8 @@ namespace NoughtsAndCrosses {
 			}
 		}
 		
-
-		/*****************************************************************
-		 * AT THE END OF EACH TURN, UPDATE GAME
-		 *****************************************************************/
 		private void UpdateGameStatus(int[] pos, int index) {
 
-			// Update boards
 			SetCellGUI(index);
 
 			if (first)
@@ -212,7 +183,6 @@ namespace NoughtsAndCrosses {
 			else 
 				board.SetCell(pos, player2);				
 
-			// Update "Game Over" conditions
 			winner = (first) ? board.IsWinner(player1) : board.IsWinner(player2);
 			full   = (player1.GetPlaced() + player2.GetPlaced() == DIM*DIM);
 
@@ -221,7 +191,6 @@ namespace NoughtsAndCrosses {
 				GameOver();
 			}
 
-			// Only if the other is a robot (and if game is not over)
 			else if ( ( first && !player2.IsHuman) 
 			       || (!first && !player1.IsHuman) ) {
 				clicked = true;
@@ -231,7 +200,6 @@ namespace NoughtsAndCrosses {
 				RobotTurn();
 			} 
 			
-			// Else, listen for clicks
 			else {
 				clicked = false;
 				first   = !first;
@@ -239,12 +207,8 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		/*********************************************************
-		 * GAME OVER
-		 *********************************************************/
 		private void GameOver() {
 			if (winner) {
-				// Update GUI
 				statusBar.Text = "Congratulations, " + board.WinnerName + "!";
 				PaintWinnerCells();
 
@@ -268,9 +232,6 @@ namespace NoughtsAndCrosses {
 			playAgain.Visibility = Visibility.Visible;
 		}
 
-		/*********************************************************
-		 * "PLAY AGAIN" BUTTON FUNCTIONALITY
-		 *********************************************************/
 		private void PlayAgain_Click(object sender, RoutedEventArgs e) {			
 			// If playing again, do a soft reset
 			player1.Reset(false);
@@ -279,9 +240,6 @@ namespace NoughtsAndCrosses {
 			Start();
 		}
 
-		/*********************************************************
-		 * UPDATE THE GUI BOARD
-		 *********************************************************/
 		private void SetCellGUI(int index) {
 			try {
 				((TextBlock) boardGrid.Children[index]).Text = (first) ? "X" : "O";
@@ -292,9 +250,6 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		/*********************************************************
-		 * PAINT WINNER CELLS IN THE GUI
-		 *********************************************************/
 		private void PaintWinnerCells() {
 			try {
 				// Remember that index = i * cols + j
@@ -320,9 +275,6 @@ namespace NoughtsAndCrosses {
 		}
 
 
-		/*********************************************************
-		 * MENU POP UP WINDOWS
-		 *********************************************************/
 		private void Instructions_Click(object sender, RoutedEventArgs e) {
 			MenuPopUps mi = new MenuPopUps("instructions");
 			mi.Owner      = this;

@@ -6,32 +6,19 @@ using System.Collections.Generic;
 
 namespace NoughtsAndCrosses {
 
-	/**********************************************
-	 * ENUM VARIABLES
-	 *********************************************/ 
 	public enum LineType { ROW, COL, DIA, NONE }
 
-	/**********************************************
-	 * BOARD CLASS
-	 *********************************************/ 
 	public class Board {
 
-		// Dimensions set in the constructor only
 		public readonly int DIM;
 
 		private string[,] board;
 
-		// Save the line and the index, so that
-		// it can be converted to (i,j) or to
-		// GUI grid index
 		public string   WinnerName  { set; get; }
 		public LineType WinnerLine  { set; get; }
 		public int      WinnerIndex { set; get; }
 
 
-		/**********************************************
-		 * CONSTRUCTOR  - INITIALIZE PROPERTIES
-		 *********************************************/ 
 		public Board(int dim) {
 			DIM   = dim;
 			board = new string[DIM, DIM];
@@ -49,16 +36,12 @@ namespace NoughtsAndCrosses {
 			return DIM;
 		}
 
-		/**********************************************
-		 * UPDATE CELL VALUE WITH PLAYER'S MARK
-		 *********************************************/ 
 		public void SetCell(int[] pos, Player player) {
 			SetCell(pos[0], pos[1], player);
 		}
 
 		public void SetCell(int i, int j, Player player) {
 			try {
-				// The first player's mark is X
 				board[i, j]    = (player.IsFirst) ? "X" : "O";
 				player.LastPos = new int[] { i, j };
 
@@ -67,9 +50,6 @@ namespace NoughtsAndCrosses {
 			}
 		}
 
-		/**********************************************
-		 * GET CELL VALUE
-		 *********************************************/
 		public string GetCell(int[] pos) {
 			return GetCell(pos[0], pos[1]);
 		}
@@ -84,17 +64,11 @@ namespace NoughtsAndCrosses {
 			return "";
 		}
 
-
-		/**********************************************
-		 * SET A REFERENCE TO ANOTHER BOARD
-		 *********************************************/
+		// Set board by reference
 		public void SetBoard(string[,] newBoard) {
 			board = newBoard;
 		}
 
-		/**********************************************
-		 * SET THE BOARD'S CONTENTS
-		 *********************************************/
 		public void Paste(string[,] newBoard) {
 			if (newBoard.GetLength(0) == DIM && newBoard.Length == DIM*DIM) 
 				for (int i=0; i<DIM; i++)
@@ -102,26 +76,18 @@ namespace NoughtsAndCrosses {
 						board[i, j] = newBoard[i, j];
 		}
 
-		/**********************************************
-		 * GET A REFERENCE TO THE BOARD
-		 *********************************************/
+		// Get board by reference
 		public string[,] GetBoard() {
 			return board;
 		}
-	
-		/**********************************************
-		 * GET THE BOARD CONTENTS
-		 *********************************************/
+
+		// Get board by copying contents
 		public string[,] Copy() {
-			// Creating new because Clone() returns a reference
 			string[,] copy = new string[DIM, DIM];
 			copy = (string[,]) board.Clone();
 			return copy;
 		}
 
-		/**********************************************
-		 * GET LINE
-		 *********************************************/
 		public string[] GetLine(LineType lt, int index) {
 
 			string[] line = new[] {"", "", ""};
@@ -152,9 +118,6 @@ namespace NoughtsAndCrosses {
 			return line;
 		}
 
-		/**********************************************
-		 * RESET BOARD PROPERTIES
-		 *********************************************/
 		public void Reset() {
 	
 			for (int i=0; i<DIM; i++)
@@ -166,9 +129,6 @@ namespace NoughtsAndCrosses {
 			WinnerIndex = -1;
 		}
 	
-		/**********************************************
-		 * GET ALL EMPTY CELLS
-		 *********************************************/
 		public List<int[]> GetEmpties() {
 			List<int[]> empties = new List<int[]>();
 

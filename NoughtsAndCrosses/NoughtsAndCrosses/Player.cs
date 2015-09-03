@@ -2,9 +2,6 @@
 using System;
 namespace NoughtsAndCrosses {
 
-	/**********************************************
-	 * PLAYER CLASS
-	 *********************************************/ 
 	public class Player {
 
 		public string Name    { set; get; }
@@ -15,11 +12,8 @@ namespace NoughtsAndCrosses {
 		public int Draws  { set; get; }
 		public int Losses { set; get; }
 
-		// How many marks are placed on the board
 		private int placed;
 
-		// FirstPos is the first move of the player
-		// FirstPos is only updated at start and/or at reset
 		private int[] firstPos;
 		public  int[] FirstPos { get { return firstPos; } }
 
@@ -29,7 +23,6 @@ namespace NoughtsAndCrosses {
 				placed++;
 				lastPos = value;
 
-				// If it's the first move, save first pos
 				if (placed == 1)
 					firstPos = value;
 
@@ -39,9 +32,6 @@ namespace NoughtsAndCrosses {
 			get { return lastPos; }
 		}
 
-		/**********************************************
-		 * CONSTRUCTOR - INITIALIZE PROPERTIES
-		 *********************************************/
 		public Player() : this("", false, false) {
 			// Uses constructor initializer.
 		}
@@ -60,16 +50,10 @@ namespace NoughtsAndCrosses {
 			lastPos  = new int[] { -1, -1 };
 		}
 
-		/**********************************************
-		 * PLACED CAN ONLY BE RETURNED, NOT ACCESSED
-		 *********************************************/ 
 		public int GetPlaced() {
 			return placed;
 		}
 
-		/**********************************************
-		 * RESET - IF "PLAY AGAIN", RESET ONLY POS
-		 *********************************************/ 
 		public void Reset(bool newGame) {
 
 			if (newGame) {
@@ -87,9 +71,6 @@ namespace NoughtsAndCrosses {
 			lastPos  = new int[] { -1, -1 };
 		}
 
-		/**********************************************
-		 * COPY - AVOID PASSING BY REFERENCE
-		 *********************************************/ 
 		public Player Copy() {
 			Player copy  = new Player();
 
@@ -111,9 +92,6 @@ namespace NoughtsAndCrosses {
 			return copy;
 		}
 
-		/**********************************************
-		 * PLAYER PRINTER
-		 *********************************************/ 
 		public override string ToString(){
 			return "Name: "      + Name     + ", " +
 			       "Is First: "  + IsFirst  + ", " +

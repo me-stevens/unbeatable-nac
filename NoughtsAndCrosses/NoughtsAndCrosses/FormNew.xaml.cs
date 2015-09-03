@@ -20,16 +20,12 @@ namespace NoughtsAndCrosses {
 		private string robot1;
 		private string robot2;
 
-		/**************************************************************
-		 * CONSTRUCTOR
-		 **************************************************************/
+
 		public FormNew() {
 			InitializeComponent();
 		}
 
-		/**************************************************************
-		 * INITIAL GUI VALUES
-		 **************************************************************/
+
 		private void FormNew_Loaded(object sender, RoutedEventArgs e) {
 			you    = "You";
 			friend = "Friend";
@@ -49,9 +45,7 @@ namespace NoughtsAndCrosses {
 			name2.Visibility      = Visibility.Hidden;
 		}
 
-		/**************************************************************
-		 * CHECK RADIO BUTTONS TO UPDATE GUI ON CLICK
-		 **************************************************************/
+
 		private void players1_Checked(object sender, RoutedEventArgs e) {
 			first1.Content = you;
 			first2.Content = robot1;
@@ -79,15 +73,13 @@ namespace NoughtsAndCrosses {
 			first2.Content = robot2;
 
 			name1title.Visibility = Visibility.Hidden;
-			name1.Visibility      = Visibility.Hidden;
+			name1box.Visibility   = Visibility.Hidden;
 
 			name2title.Visibility = Visibility.Hidden;
-			name2.Visibility      = Visibility.Hidden;
+			name2box.Visibility   = Visibility.Hidden;
 		}
 
-		/**************************************************************
-		 * DIALOG BUTTONS
-		 **************************************************************/
+
 		private void ok_Click(object sender, RoutedEventArgs e) {
 			CheckFormValues();
 			DialogResult = true;
@@ -97,9 +89,7 @@ namespace NoughtsAndCrosses {
 			DialogResult = false;
 		}
 
-		/**************************************************************
-		 * CHECK FORM VALUES BEFORE SENDING
-		 **************************************************************/
+
 		private void CheckFormValues() {
 
 			if ((bool) players1.IsChecked) {
