@@ -54,7 +54,7 @@ subtitle2: "using artificial intelligence"
 
 			<ul>
 				<li><strong>AI.cs:</strong> 
-					<p>A class with common methods to be shared by the derived classes. All child classes have a <code class="language-csharp">CalculateCell()</code> method to initialize the relevant variables and a <code class="language-csharp">Algorithm()</code> method for the recursive calculation. The latter is invoked by the former.</p>
+					<p>A class with common methods to be shared by the derived classes. All child classes have a <code class="language-csharp">CalculateCell()</code> method to initialize the relevant variables and an <code class="language-csharp">Algorithm()</code> method for the recursive calculation. The latter is invoked by the former.</p>
 				</li>
 
 				<li><strong>AIMiniMax.cs:</strong> 
@@ -70,7 +70,8 @@ AIMiniMaxAlphaBeta ai = new AIMiniMaxAlphaBeta();
 
 pos = ai.CalculateCell(board, first);
 					</code></pre>
-					<p>To get better results in a big board, specially for the first moves, alpha-beta is not enough, since it depends on the order in which children are visited. Initial shallow searches followed by some move-ordering technique, implementing "memory" through transposition tables or any other techniques could be investigated, (but were not used here). <br>&ndash; <span class="small">See also: <a href="#benchmark">rough benchmark</a></span>.</p>
+					<p>To get better results in a big board, specially for the first moves, alpha-beta is not enough, since it depends on the order in which children are visited. Initial shallow searches followed by some move-ordering technique, implementing "memory" through transposition tables or any other techniques could be investigated, (but were not used here).<br>
+					&ndash; <span class="small">See also: <a href="#benchmark">rough benchmark</a></span>.</p>
 				</li>
 			</ul>
 
