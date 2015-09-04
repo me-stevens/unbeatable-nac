@@ -92,6 +92,7 @@
     <Compile Include="MenuPopUps.xaml.cs">
       <DependentUpon>MenuPopUps.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AIMTDF.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
