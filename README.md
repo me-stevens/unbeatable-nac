@@ -30,10 +30,12 @@ In Visual Studio, go to **TEST > Windows > Test Explorer** to open the Test Expl
 - [ ] Implement the MVVM pattern for the views.
 - [ ] Implement bindings. This is a bit tricky because the binding can only be made to one-dimensional arrays, which would need a restructuration of the `Board` class, and they should also implement the `INotifyPropertyChanged` interface, which would make the application non-GUI agnostic.
 
-## License
-
-MIT License
-
 ## Dedicated site
 
 http://me-stevens.github.io/unbeatable-nac
+
+
+## License
+
+[![License](https://img.shields.io/badge/gnu-license-green.svg?style=flat)](https://opensource.org/licenses/GPL-2.0)
+GNU License
